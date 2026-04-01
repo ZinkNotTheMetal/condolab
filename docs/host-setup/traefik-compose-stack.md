@@ -27,28 +27,50 @@ The stack definition lives in:
 
 1. Ensure the shared external `ipvlan` Docker network already exists on the
    target host.
-2. Start the stack from `src/docker/traefik/`.
-3. Confirm Traefik is healthy before attaching other app stacks.
-4. Update each app stack to join the `ipvlan` network and add Traefik labels.
-5. Replace the generated self-signed certificate path with a trusted certificate
-   strategy when you are ready.
+2. Create the ACME storage file on the host and lock down its permissions.
+3. Store `CF_TRAEFIK_API_TOKEN` and `TRAEFIK_ACME_EMAIL` in Infisical.
+4. Start the stack from `src/docker/traefik/` with `infisical run`.
+5. Confirm Traefik is healthy before attaching other app stacks.
+6. Update each app stack to join the `ipvlan` network and add Traefik labels.
 
 ## Basic commands
 
 From `src/docker/traefik/`:
 
 ```bash
-docker compose up -d
+mkdir -p /condolab/docker/traefik/acme
+touch /condolab/docker/traefik/acme/acme.json
+chmod 600 /condolab/docker/traefik/acme/acme.json
+infisical run --domain=https://secrets.zinkzone.tech \
+  --env=Production -- docker compose up -d
 docker compose ps
 docker compose logs -f traefik
 ```
 
 ## TLS note
 
-Traefik is configured so HTTPS is active on first boot. Without an ACME
-resolver or user-supplied certificates, Traefik serves its generated
-self-signed certificate. That gives encrypted transport immediately while you
-decide how trusted certificates should be issued for the lab.
+Traefik is configured to use Let's Encrypt through the Cloudflare DNS challenge.
+Once the resolver can read `CF_TRAEFIK_API_TOKEN` and `TRAEFIK_ACME_EMAIL`, new
+routers on `websecure` can obtain trusted certificates without opening the app
+directly to the internet.
+
+If you use self-hosted Infisical for secret injection, point the CLI at the
+local instance before starting the stack:
+
+```bash
+infisical login --domain=https://secrets.zinkzone.tech
+infisical init
+```
+
+Run `infisical init` from `src/docker/traefik/` so the CLI ties that directory
+to the Traefik secret context before you use `infisical run`.
+
+For automation, use `infisical run` with a machine identity or service token.
+
+Store these secrets in Infisical:
+
+- `CF_TRAEFIK_API_TOKEN` for Cloudflare DNS updates
+- `TRAEFIK_ACME_EMAIL` for Let's Encrypt registration
 
 ## App integration pattern
 
@@ -58,6 +80,8 @@ Each app stack should:
 - keep internal-only services on a private app network
 - opt in with `traefik.enable=true`
 - define a host rule that matches the intended DNS record
+- set `traefik.http.routers.<name>.tls.certresolver=cloudflare` when you want
+  the router to request a certificate explicitly
 - set `traefik.http.services.<name>.loadbalancer.server.port` when the app does
   not expose the right port automatically
 
