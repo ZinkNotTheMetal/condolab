@@ -25,8 +25,10 @@ The stack definition lives in:
 2. Copy `docker/infisical/.env.example` to `docker/infisical/.env`.
 3. Replace placeholder values with generated secrets and set `SITE_URL` to the
    Infisical IPVLAN IP or hostname.
-4. Start the stack from that directory.
-5. Verify the UI responds locally before putting it behind a reverse proxy.
+4. If this is a fresh Postgres 18 deployment, remove any old database files from
+   `/condolab/databases/infisical/postgres` before the first start.
+5. Start the stack from that directory.
+6. Verify the UI responds locally before putting it behind a reverse proxy.
 
 ## Basic commands
 
@@ -53,6 +55,7 @@ docker compose logs -f backend
 - do not commit the real `.env`
 - keep the Infisical encryption and auth secrets backed up outside the stack
 - back up PostgreSQL data before upgrades or major changes
+- the Postgres 18 container expects the host mount at `/var/lib/postgresql`
 - ensure the router/LAN has the required route for the IPVLAN subnet back to the
   Docker host
 - add TLS and reverse proxy routing in a later networking step

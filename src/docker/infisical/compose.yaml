@@ -31,7 +31,7 @@ services:
       timeout: 10s
       retries: 10
     volumes:
-      - /condolab/databases/infisical/postgres:/var/lib/postgresql/data
+      - /condolab/databases/infisical/postgres:/var/lib/postgresql
     networks:
       - infisical
   redis:
@@ -51,4 +51,4 @@ networks:
     internal: true
   docker_ipvlan:
     external: true
-    name: docker_ipvlan
+    name: ipvlan
