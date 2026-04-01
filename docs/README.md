@@ -8,6 +8,7 @@ Primary documentation for the condo lab.
 
 - [MS-01 Debian 13 install](host-setup/ms-01-debian-13-install.md)
 - [MS-01 Ansible bootstrap](host-setup/ms-01-ansible-bootstrap.md)
+- [Infisical Compose stack](host-setup/infisical-compose-stack.md)
 
 ### Standards
 
@@ -28,4 +29,5 @@ For the MS-01, the expected early sequence is:
 
 1. install Debian and confirm SSH access
 2. run the Ansible bootstrap
-3. continue with standards and service-specific setup
+3. stand up the Infisical stack for machine-managed secrets
+4. continue with standards and service-specific setup

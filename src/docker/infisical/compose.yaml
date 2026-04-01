@@ -1,0 +1,54 @@
+name: infisical
+
+services:
+  backend:
+    image: infisical/infisical:v0.159.3
+    container_name: infisical_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+    networks:
+      - infisical
+      - docker_ipvlan
+  db:
+    image: postgres:18.3-alpine
+    container_name: infisical_db
+    restart: unless-stopped
+    env_file:
+      - .env
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready --username=${POSTGRES_USER} --dbname=${POSTGRES_DB}
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    volumes:
+      - /condolab/databases/infisical/postgres:/var/lib/postgresql/data
+    networks:
+      - infisical
+  redis:
+    image: redis:8.6.2-alpine
+    container_name: infisical_redis
+    restart: unless-stopped
+    command:
+      - redis-server
+      - --appendonly
+      - yes
+    volumes:
+      - /condolab/docker/infisical/redis:/data
+    networks:
+      - infisical
+networks:
+  infisical:
+    internal: true
+  docker_ipvlan:
+    external: true
+    name: docker_ipvlan
