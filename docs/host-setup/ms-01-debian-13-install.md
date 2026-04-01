@@ -1,4 +1,4 @@
-# Debian 13 install
+# MS-01 Debian 13 install
 
 Short install notes for a Debian 13 bare-metal install on the Minisforum MS-01.
 
@@ -44,14 +44,37 @@ Before installing:
 1. Confirm the MS-01 is booting in UEFI mode.
 2. Make sure the target NVMe drive is visible.
 3. Boot from the USB installer.
-4. If Secure Boot causes trouble, disable it temporarily.
+4. Disable secure boot (if ZFS mirroring is planned)
+
+## Secure Boot and ZFS
+
+If this host will use ZFS pooling, expect Debian to install ZFS as a DKMS kernel
+module instead of bundling it directly into the kernel.
+
+Why this matters:
+
+- ZFS on Debian is typically built as an out-of-tree kernel module
+- Secure Boot can block unsigned DKMS modules from loading
+- when that happens, `modprobe zfs` can fail with `Key was rejected by service`
+
+If debian was already installed and you are getting the above error.
+Confirm the state with `mokutil --sb-state`
+
+1. Reboot into the MS-01 BIOS (F7 for Minisforum).
+2. Go under security.
+3. Disable Secure Boot.
+4. Boot back into Debian.
+5. Confirm the state with `mokutil --sb-state`.
+6. Retry `sudo modprobe zfs`.
+
+Keep Secure Boot enabled only if you plan to manage module signing and
+Machine Owner Key enrollment for DKMS-built modules.
 
 ## Debian install choices
 
 Use these defaults unless you have a reason not to:
 
 - installer: standard Debian installer
-- network: connect your 10Gb interface you plan to use
 - hostname: set the final host name now
 - user: create your admin user
 - partitioning: guided, use entire disk, ext4
@@ -116,6 +139,11 @@ Complete these steps before running playbooks:
 1. Confirm the intended 10Gb interface has link.
 2. Set the final IP configuration.
 3. Add your SSH public key to the login account you will use for Ansible.
+
+   ```bash
+   just copy-ssh-id-ms01
+   ```
+
 4. Confirm that account is in the `sudo` group.
 5. Confirm you can SSH to the host.
 
@@ -128,6 +156,10 @@ python3 --version
 ```
 
 When those pass, the machine is ready for the Ansible bootstrap in this repo.
+
+Next step:
+
+- [MS-01 Ansible bootstrap](ms-01-ansible-bootstrap.md)
 
 ## References
 
