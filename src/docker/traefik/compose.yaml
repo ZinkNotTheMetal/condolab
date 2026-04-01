@@ -1,0 +1,21 @@
+name: core-traefik
+
+services:
+  traefik:
+    image: traefik:v3.6
+    container_name: core_traefik_edge
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./traefik.yaml:/etc/traefik/traefik.yaml:ro
+      - ./config:/etc/traefik/config:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - docker_ipvlan
+
+networks:
+  docker_ipvlan:
+    name: ipvlan
+    external: true

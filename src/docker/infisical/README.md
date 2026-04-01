@@ -23,11 +23,12 @@ broader service rollout begins.
 
 1. Copy `.env.example` to `.env`.
 2. Replace placeholder values with generated secrets and set `SITE_URL` to the
-   Infisical IPVLAN IP or hostname.
+   final Traefik-routed hostname, such as `https://infisical.home.arpa`.
 3. If this is a fresh Postgres 18 deployment, ensure any previous database files
    under `/condolab/databases/infisical/postgres` are removed before first
    start.
-4. Start the stack:
+4. Ensure the external `ipvlan` Docker network already exists.
+5. Start the stack:
 
 ```bash
 docker compose up -d
@@ -46,7 +47,8 @@ docker compose logs -f backend
 - protect the file with restrictive permissions
 - back up the PostgreSQL data and the Infisical encryption material together
 - the Postgres 18 container expects its host mount at `/var/lib/postgresql`
-- the `backend` service joins the external `docker_ipvlan` network while `db`
-  and `redis` stay on the internal app network
-- ensure the `docker_ipvlan` network already exists before starting the stack
-- place this behind the reverse proxy later instead of exposing it broadly
+- the `backend` service joins the external `docker_ipvlan` network so Traefik
+  can reach it over the shared lab network while `db` and `redis` stay on the
+  internal app network
+- ensure the external `ipvlan` network already exists before starting the stack
+- the default labels publish Infisical on `https://infisical.home.arpa`
