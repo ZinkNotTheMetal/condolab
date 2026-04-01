@@ -1,0 +1,9 @@
+---
+- name: Bootstrap homelab Debian hosts
+  hosts: homelab
+  become: true
+  gather_facts: true
+  roles:
+    - role: common
+    - role: docker
+      when: docker_install | default(false) | bool

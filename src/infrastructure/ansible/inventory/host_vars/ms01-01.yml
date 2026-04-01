@@ -1,0 +1,6 @@
+ansible_host: 192.168.0.8
+ansible_user: william
+ansible_become: true
+host_role: ms01
+timezone: America/Chicago
+zwave_stick_enabled: true
