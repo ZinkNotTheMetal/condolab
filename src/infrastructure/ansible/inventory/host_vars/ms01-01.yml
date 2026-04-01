@@ -3,4 +3,6 @@ ansible_user: william
 ansible_become: true
 host_role: ms01
 timezone: America/Chicago
-zwave_stick_enabled: true
+docker_ipvlan_enabled: true
+docker_ipvlan_name: ipvlan
+docker_ipvlan_subnet: 192.168.200.0/24

@@ -163,5 +163,6 @@ from the host.
 ## Related docs
 
 - [MS-01 Debian 13 install](ms-01-debian-13-install.md)
+- [Infisical Compose stack](infisical-compose-stack.md)
 - [Ansible implementation README](../../src/infrastructure/ansible/README.md)
 - [Dev container for Ansible](../developer/devcontainer-ansible.md)

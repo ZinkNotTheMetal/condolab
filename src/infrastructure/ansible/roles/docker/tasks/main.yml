@@ -86,3 +86,43 @@
     append: true
   loop: "{{ bootstrap_admin_users }}"
   when: bootstrap_admin_users | length > 0
+
+- name: Assert Docker IPVLAN subnet is defined when enabled
+  ansible.builtin.assert:
+    that:
+      - docker_ipvlan_subnet | length > 0
+    fail_msg: docker_ipvlan_subnet must be set when docker_ipvlan_enabled is true.
+  when: docker_ipvlan_enabled | bool
+
+- name: Resolve Docker IPVLAN parent from active ethernet interface
+  ansible.builtin.set_fact:
+    docker_ipvlan_parent: "{{ item }}"
+  loop: "{{ ansible_facts.interfaces | default([]) }}"
+  when:
+    - docker_ipvlan_enabled | bool
+    - docker_ipvlan_parent | length == 0
+    - item != 'lo'
+    - item is match('^en')
+    - ansible_facts[item] is defined
+    - ansible_facts[item].active | default(false)
+  loop_control:
+    label: "{{ item }}"
+
+- name: Assert Docker IPVLAN parent interface is resolved
+  ansible.builtin.assert:
+    that:
+      - docker_ipvlan_parent | length > 0
+    fail_msg: No active ethernet interface was found for docker_ipvlan_parent.
+  when: docker_ipvlan_enabled | bool
+
+- name: Create Docker IPVLAN L3 network
+  community.docker.docker_network:
+    name: "{{ docker_ipvlan_name }}"
+    driver: ipvlan
+    driver_options:
+      parent: "{{ docker_ipvlan_parent }}"
+      ipvlan_mode: "{{ docker_ipvlan_mode }}"
+    ipam_config:
+      - subnet: "{{ docker_ipvlan_subnet }}"
+    state: present
+  when: docker_ipvlan_enabled | bool
