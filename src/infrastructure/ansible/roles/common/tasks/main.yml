@@ -1,0 +1,87 @@
+---
+- name: Assert timezone is configured
+  ansible.builtin.assert:
+    that:
+      - timezone is defined
+      - timezone | length > 0
+    fail_msg: timezone must be set for each host or group.
+
+- name: Set system timezone
+  community.general.timezone:
+    name: "{{ timezone }}"
+
+- name: Refresh apt package cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Upgrade distribution packages
+  ansible.builtin.apt:
+    upgrade: dist
+  when: bootstrap_upgrade_packages | bool
+
+- name: Upgrade operating system packages to latest state
+  ansible.builtin.apt:
+    upgrade: full
+  when: bootstrap_upgrade_os | bool
+
+- name: Install baseline packages
+  ansible.builtin.apt:
+    name: "{{ bootstrap_packages }}"
+    state: present
+
+- name: Check NFS mount directories
+  ansible.builtin.stat:
+    path: "{{ item.local_path }}"
+  loop: "{{ nfs_mounts }}"
+  register: common_nfs_mount_directory_stats
+
+- name: Ensure NFS mount directories exist
+  ansible.builtin.file:
+    path: "{{ item.item.local_path }}"
+    state: directory
+    mode: '0755'
+  loop: "{{ common_nfs_mount_directory_stats.results }}"
+  when: not item.stat.exists
+
+- name: Ensure NFS shares are present in fstab
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    regexp: '^{{ nfs_server | regex_escape }}:{{ item.remote_path | regex_escape }}\s+{{ item.local_path | regex_escape }}\s+nfs\s+'
+    line: "{{ nfs_server }}:{{ item.remote_path }} {{ item.local_path }} nfs defaults,_netdev 0 0"
+    state: present
+    create: true
+    owner: root
+    group: root
+    mode: '0644'
+  loop: "{{ nfs_mounts }}"
+
+- name: Gather current NFS mount facts
+  ansible.builtin.mount_facts:
+    sources:
+      - dynamic
+    fstypes:
+      - nfs
+      - nfs4
+    include_aggregate_mounts: false
+
+- name: Assert existing NFS mount sources match inventory
+  ansible.builtin.assert:
+    that:
+      - >-
+        ansible_facts.mount_points[item.local_path] is not defined
+        or ansible_facts.mount_points[item.local_path].device == nfs_server ~ ':' ~ item.remote_path
+    fail_msg: >-
+      {{ item.local_path }} is already mounted from
+      {{ ansible_facts.mount_points[item.local_path].device | default('an unexpected source') }}.
+      Update inventory/group_vars/homelab.yml or unmount the existing share before rerunning.
+  loop: "{{ nfs_mounts }}"
+
+- name: Mount NFS shares
+  ansible.builtin.command:
+    argv:
+      - mount
+      - "{{ item.local_path }}"
+  loop: "{{ nfs_mounts }}"
+  when: ansible_facts.mount_points[item.local_path] is not defined
+  changed_when: true

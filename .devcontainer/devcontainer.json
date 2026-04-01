@@ -1,0 +1,19 @@
+{
+  "name": "condolab-ansible",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "remoteUser": "vscode",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "redhat.ansible",
+        "timonwong.shellcheck"
+      ]
+    }
+  },
+  "mounts": [
+    "source=${localEnv:HOME}/.ssh,target=/tmp/host-ssh,type=bind,readonly"
+  ],
+  "postCreateCommand": "bash -lc 'sudo install -d -m 700 -o vscode -g vscode /home/vscode/.ssh && sudo find /tmp/host-ssh -maxdepth 1 -type f -exec cp {} /home/vscode/.ssh/ \\; && sudo chown -R vscode:vscode /home/vscode/.ssh && sudo chmod 700 /home/vscode/.ssh && sudo find /home/vscode/.ssh -type f -name \"*.pub\" -exec chmod 644 {} \\; && sudo find /home/vscode/.ssh -type f ! -name \"*.pub\" -exec chmod 600 {} \\; && cd src/infrastructure/ansible && ansible-galaxy collection install -r requirements.yml'"
+}

@@ -1,0 +1,36 @@
+bootstrap_upgrade_packages: true
+bootstrap_upgrade_os: true
+timezone: America/Chicago
+
+bootstrap_admin_users:
+  - william
+
+# These packages will be installed on all hosts during the bootstrap process.
+# This is a good place to add any packages that you want to be available on all
+# hosts, such as monitoring agents or backup tools.
+bootstrap_packages:
+  - sudo
+  - curl
+  - nfs-common
+  - git
+  - vim
+  - at
+  - ca-certificates
+  - htop
+  - net-tools
+  - dnsutils
+  - ethtool
+  - fail2ban
+  - jq
+  - needrestart
+  - unzip
+
+docker_install: true
+
+# NFS mounts.
+nfs_server: 192.168.0.195
+nfs_mounts:
+  - remote_path: /volume1/Backups
+    local_path: /mnt/Backups
+  - remote_path: /volume1/Media
+    local_path: /mnt/Media
