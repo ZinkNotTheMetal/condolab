@@ -128,6 +128,7 @@ Use these checks from the host as needed:
 hostnamectl
 timedatectl
 docker --version
+infisical --version
 mount | grep nfs
 systemctl status docker
 ```
@@ -160,6 +161,33 @@ assuming the playbook failed.
 Check whether the NFS shares are defined and whether the target NAS is reachable
 from the host.
 
+## Infisical CLI usage
+
+After bootstrap installs the CLI, point it at the self-hosted Condolab
+instance instead of Infisical Cloud:
+
+```bash
+infisical login --domain=https://secrets.zinkzone.tech
+infisical init
+```
+
+Run `infisical init` in the working directory after login so the CLI can attach
+that directory to the correct project and environment.
+
+For automation, prefer a machine identity or service token over an interactive
+user session.
+
+Example pattern:
+
+```bash
+infisical run --domain=https://secrets.zinkzone.tech \
+  --env=Development -- docker compose up -d
+```
+
+Store secret keys in Infisical with the exact environment variable names the
+target process expects, such as `CF_DNS_API_TOKEN` for Traefik's Cloudflare DNS
+challenge support.
+
 ## Related docs
 
 - [MS-01 Debian 13 install](ms-01-debian-13-install.md)
@@ -167,3 +195,9 @@ from the host.
 - [Infisical Compose stack](infisical-compose-stack.md)
 - [Ansible implementation README](../../src/infrastructure/ansible/README.md)
 - [Dev container for Ansible](../developer/devcontainer-ansible.md)
+
+## Notes
+
+- the bootstrap now installs the Infisical CLI when `infisical_cli_install` is
+  enabled so later Compose stacks can inject secrets without copying tokens into
+  tracked files
