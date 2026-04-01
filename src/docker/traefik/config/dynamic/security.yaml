@@ -1,0 +1,16 @@
+http:
+  middlewares:
+    security-headers:
+      headers:
+        browserXssFilter: true
+        contentTypeNosniff: true
+        frameDeny: true
+        referrerPolicy: no-referrer
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 31536000
+
+tls:
+  options:
+    default:
+      sniStrict: true
