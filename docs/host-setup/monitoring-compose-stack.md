@@ -82,6 +82,15 @@ The collector adds labels intended to make early queries useful:
 - container CPU, memory, filesystem, and network from `cadvisor`
 - Prometheus and Alloy self-metrics for pipeline troubleshooting
 
+## Provisioned dashboard
+
+Grafana auto-loads an **MS01 Overview** dashboard that includes:
+
+- host CPU, memory, load, and uptime
+- top Docker containers by CPU and memory
+- warning and error log volume over time
+- a logs panel you can open and inspect directly for warning and error events
+
 ## Access pattern
 
 - Grafana is routed through Traefik as `https://grafana.zinkzone.tech`

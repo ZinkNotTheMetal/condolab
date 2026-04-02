@@ -24,6 +24,8 @@ early platform services can be debugged before more apps are added.
 - `alloy/config.alloy`
 - `grafana/provisioning/datasources/loki.yaml`
 - `grafana/provisioning/datasources/prometheus.yaml`
+- `grafana/provisioning/dashboards/monitoring.yaml`
+- `grafana/dashboards/ms01-overview.json`
 - `prometheus/prometheus.yml`
 
 ## Usage
@@ -90,3 +92,5 @@ docker compose logs -f alloy
   - `node_memory_MemAvailable_bytes`
   - `rate(container_cpu_usage_seconds_total[5m])`
   - `container_memory_working_set_bytes`
+- Grafana auto-provisions the **MS01 Overview** dashboard with host metrics,
+  top container usage, and an error and warning log timeline
