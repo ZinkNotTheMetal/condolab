@@ -1,0 +1,145 @@
+name: media-suite
+
+services:
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: media_qbittorrent_ui
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID:-1000}
+      PGID: ${PGID:-1000}
+      TZ: ${TZ:-America/Chicago}
+      WEBUI_PORT: 8080
+    volumes:
+      - /condolab/docker/media/qbittorrent/config:/config
+      - /mnt/Files/Torrent-Data:/data/downloads
+    ports:
+      - "6881:6881"
+      - "6881:6881/udp"
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=ipvlan
+      - traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.zinkzone.tech`)
+      - traefik.http.routers.qbittorrent.entrypoints=websecure
+      - traefik.http.routers.qbittorrent.tls=true
+      - traefik.http.routers.qbittorrent.middlewares=security-headers@file
+      - traefik.http.services.qbittorrent.loadbalancer.server.port=8080
+    networks:
+      - media
+      - docker_ipvlan
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: media_sonarr_ui
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID:-1000}
+      PGID: ${PGID:-1000}
+      TZ: ${TZ:-America/Chicago}
+    volumes:
+      - /condolab/docker/media/sonarr/config:/config
+      - /mnt/Media/TV Shows:/data/tv
+      - /mnt/Files/Torrent-Data:/data/downloads
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=ipvlan
+      - traefik.http.routers.sonarr.rule=Host(`sonarr.zinkzone.tech`)
+      - traefik.http.routers.sonarr.entrypoints=websecure
+      - traefik.http.routers.sonarr.tls=true
+      - traefik.http.routers.sonarr.middlewares=security-headers@file
+      - traefik.http.services.sonarr.loadbalancer.server.port=8989
+    networks:
+      - media
+      - docker_ipvlan
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: media_radarr_ui
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID:-1000}
+      PGID: ${PGID:-1000}
+      TZ: ${TZ:-America/Chicago}
+    volumes:
+      - /condolab/docker/media/radarr/config:/config
+      - /mnt/Media/Movies:/data/movies
+      - /mnt/Files/Torrent-Data:/data/downloads
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=ipvlan
+      - traefik.http.routers.radarr.rule=Host(`radarr.zinkzone.tech`)
+      - traefik.http.routers.radarr.entrypoints=websecure
+      - traefik.http.routers.radarr.tls=true
+      - traefik.http.routers.radarr.middlewares=security-headers@file
+      - traefik.http.services.radarr.loadbalancer.server.port=7878
+    networks:
+      - media
+      - docker_ipvlan
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: media_prowlarr_ui
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID:-1000}
+      PGID: ${PGID:-1000}
+      TZ: ${TZ:-America/Chicago}
+    volumes:
+      - /condolab/docker/media/prowlarr/config:/config
+    depends_on:
+      flaresolverr:
+        condition: service_started
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=ipvlan
+      - traefik.http.routers.prowlarr.rule=Host(`prowlarr.zinkzone.tech`)
+      - traefik.http.routers.prowlarr.entrypoints=websecure
+      - traefik.http.routers.prowlarr.tls=true
+      - traefik.http.routers.prowlarr.middlewares=security-headers@file
+      - traefik.http.services.prowlarr.loadbalancer.server.port=9696
+    networks:
+      - media
+      - docker_ipvlan
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: media_flaresolverr_api
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-America/Chicago}
+      LOG_LEVEL: info
+    networks:
+      - media
+
+  overseerr:
+    image: sctx/overseerr:latest
+    container_name: media_overseerr_ui
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-America/Chicago}
+      LOG_LEVEL: info
+    volumes:
+      - /condolab/docker/media/overseerr/config:/app/config
+    depends_on:
+      sonarr:
+        condition: service_started
+      radarr:
+        condition: service_started
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=ipvlan
+      - traefik.http.routers.overseerr.rule=Host(`overseerr.zinkzone.tech`)
+      - traefik.http.routers.overseerr.entrypoints=websecure
+      - traefik.http.routers.overseerr.tls=true
+      - traefik.http.routers.overseerr.middlewares=security-headers@file
+      - traefik.http.services.overseerr.loadbalancer.server.port=5055
+    networks:
+      - media
+      - docker_ipvlan
+
+networks:
+  media:
+    internal: true
+  docker_ipvlan:
+    external: true
+    name: ipvlan
