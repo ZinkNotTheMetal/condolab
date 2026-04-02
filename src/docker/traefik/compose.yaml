@@ -5,9 +5,9 @@ services:
     image: traefik:v3.6
     container_name: core_traefik_edge
     restart: unless-stopped
+    user: "0:0"
     command:
-      - --entrypoints.websecure.http.tls.certresolver=cloudflare
-      - --certificatesresolvers.cloudflare.acme.email=${CF_TRAEFIK_EMAIL}
+      - --certificatesresolvers.cloudflare.acme.email=${TRAEFIK_ACME_EMAIL}
       - --certificatesresolvers.cloudflare.acme.storage=/etc/traefik/acme/acme.json
       - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
       - --certificatesresolvers.cloudflare.acme.dnschallenge.resolvers=1.1.1.1:53,1.0.0.1:53
