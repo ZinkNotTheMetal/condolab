@@ -1,12 +1,12 @@
 # Monitoring Compose stack
 
-This is the centralized logging step for the condo lab.
+This is the centralized logging and metrics step for the condo lab.
 
 ## Goal
 
 Stand up one monitoring stack that collects Docker container logs from the host,
-stores them in Loki, and makes them searchable in Grafana early in the lab
-build.
+stores them in Loki, scrapes host and container metrics with Prometheus, and
+makes both searchable in Grafana early in the lab build.
 
 ## Stack location
 
@@ -19,6 +19,9 @@ The stack definition lives in:
 - `loki` for centralized log storage
 - `grafana` for dashboards and log search
 - `alloy` for Docker log discovery and forwarding
+- `prometheus` for metrics storage
+- `node_exporter` for host metrics
+- `cadvisor` for container metrics
 
 ## Setup flow
 
@@ -26,9 +29,11 @@ The stack definition lives in:
    `src/docker/monitoring/.env`.
 2. Set a strong Grafana admin password.
 3. Ensure the external `ipvlan` Docker network already exists.
-4. Create host storage directories or ZFS datasets for Loki and Grafana.
+4. Create host storage directories or ZFS datasets for Loki, Grafana, and
+   Prometheus.
 5. Start the stack from `src/docker/monitoring/`.
-6. Confirm Grafana loads and Alloy is pushing logs into Loki.
+6. Confirm Grafana loads, Alloy is pushing logs into Loki, and Prometheus is
+   scraping the exporters.
 
 ## Basic commands
 
@@ -38,6 +43,7 @@ From `src/docker/monitoring/`:
 cp .env.example .env
 mkdir -p /condolab/docker/monitoring/loki
 mkdir -p /condolab/docker/monitoring/grafana
+mkdir -p /condolab/docker/monitoring/prometheus
 chown -R 10001:10001 /condolab/docker/monitoring/loki
 chown -R 472:472 /condolab/docker/monitoring/grafana
 docker compose up -d
@@ -52,6 +58,8 @@ docker compose logs -f alloy
 - Alloy reads container streams from the Docker socket
 - Loki stores the logs
 - Grafana queries Loki through a provisioned data source
+- Prometheus scrapes metrics from node exporter, cAdvisor, Alloy, and itself
+- Grafana queries Prometheus through a provisioned data source
 
 Application stacks do not need their own collector sidecar for this first host.
 
@@ -68,11 +76,18 @@ The collector adds labels intended to make early queries useful:
 - `compose_project`
 - `compose_service`
 
+## Metrics available
+
+- host CPU, memory, disk, and network from `node_exporter`
+- container CPU, memory, filesystem, and network from `cadvisor`
+- Prometheus and Alloy self-metrics for pipeline troubleshooting
+
 ## Access pattern
 
 - Grafana is routed through Traefik as `https://grafana.zinkzone.tech`
 - Loki stays private inside the monitoring stack network
-- Alloy stays private and only needs Docker socket access
+- Prometheus, Alloy, node exporter, and cAdvisor stay private inside the
+  monitoring stack network
 
 ## Related docs
 

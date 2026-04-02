@@ -1,0 +1,24 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets:
+          - monitoring_prometheus_api:9090
+
+  - job_name: node
+    static_configs:
+      - targets:
+          - monitoring_node_exporter:9100
+
+  - job_name: cadvisor
+    static_configs:
+      - targets:
+          - monitoring_cadvisor:8080
+
+  - job_name: alloy
+    static_configs:
+      - targets:
+          - monitoring_alloy_collector:12345
