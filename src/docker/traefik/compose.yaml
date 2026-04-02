@@ -6,6 +6,8 @@ services:
     container_name: core_traefik_edge
     restart: unless-stopped
     user: "0:0"
+    command:
+      - --certificatesresolvers.cloudflare.acme.email=${ACME_TRAEFIK_EMAIL}
     environment:
       ACME_TRAEFIK_EMAIL: ${ACME_TRAEFIK_EMAIL}
       CF_DNS_API_TOKEN: ${CF_TRAEFIK_API_TOKEN}
