@@ -1,0 +1,38 @@
+name: media-plex
+
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: media_plex
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      VERSION: docker
+      PLEX_CLAIM: ${PLEX_CLAIM}
+      ADVERTISE_IP: ${ADVERTISE_IP}
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=ipvlan
+      - traefik.http.routers.plex.rule=Host(`plex.zinkzone.tech`)
+      - traefik.http.routers.plex.entrypoints=websecure
+      - traefik.http.routers.plex.tls=true
+      - traefik.http.routers.plex.middlewares=security-headers@file
+      - traefik.http.services.plex.loadbalancer.server.port=32400
+    ports:
+      - "32400:32400"
+    volumes:
+      - /condolab/docker/plex/config:/config
+      - /condolab/docker/plex/transcode:/transcode
+      - /mnt/Media/Movies:/data/movies:ro
+      - /mnt/Media/TV Shows:/data/tv:ro
+    networks:
+      - docker_ipvlan
+
+networks:
+  docker_ipvlan:
+    external: true
+    name: ipvlan

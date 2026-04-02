@@ -1,21 +1,17 @@
 # TODO
 
-1. Secrets manager (Infisical)
-2. Plex
-3. Media
+2. Media
     1. flaresolverr
     2. prowlarr
     3. radarr
     4. sonarr
     5. qbitorrent
-4. Overseerr (put restart)
-5. Traefik / Caddy
-6. Stirling PDF
-7. Authentik ??
-8. Karakeep
-9. Monitoring / Loki / Grafana
-10. Home Assistant
-11. Node Red
-12. Traccar
-13. Ollama ??
-14. Dozzle
+3. Overseerr (put restart)
+4. Stirling PDF
+5. Authentik ??
+6. Karakeep
+7. Home Assistant
+8. Node Red
+9. Traccar
+10. Ollama ??
+11. Dozzle
