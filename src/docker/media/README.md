@@ -59,8 +59,8 @@ docker compose logs -f qbittorrent
 
 ## Notes
 
-- FlareSolverr stays internal to the stack because only the indexer workflow
-  needs it
+- FlareSolverr is not exposed through Traefik, but it does join the shared
+  `ipvlan` network so it can resolve and reach external indexer endpoints
 - qBittorrent publishes `6881` TCP and UDP directly for torrent traffic while
   the web UI stays behind Traefik
 - Sonarr, Radarr, and qBittorrent share the same downloads mount so import paths

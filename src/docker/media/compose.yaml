@@ -110,6 +110,7 @@ services:
       LOG_LEVEL: info
     networks:
       - media
+      - docker_ipvlan
 
   overseerr:
     image: sctx/overseerr:latest

@@ -57,7 +57,8 @@ docker compose logs -f qbittorrent
 - `Radarr` is routed through Traefik as `https://radarr.zinkzone.tech`
 - `Prowlarr` is routed through Traefik as `https://prowlarr.zinkzone.tech`
 - `Overseerr` is routed through Traefik as `https://overseerr.zinkzone.tech`
-- `FlareSolverr` stays private inside the media stack network
+- `FlareSolverr` is not exposed through Traefik, but it joins the shared
+  `ipvlan` network so it can reach external sites for challenge solving
 - qBittorrent also publishes torrent traffic on `6881` TCP and UDP
 
 ## Filesystem expectations
