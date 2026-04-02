@@ -7,7 +7,7 @@ api:
   insecure: false
 
 log:
-  level: DEBUG
+  level: INFO 
 
 accessLog: {}
 
