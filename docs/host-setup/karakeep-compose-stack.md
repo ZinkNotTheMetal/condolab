@@ -33,6 +33,15 @@ experimental AI stack around.
 8. Verify KaraKeep loads through Traefik and test one saved bookmark with AI
    tagging enabled.
 
+Use the prefixed KaraKeep secret names in `.env` or Infisical:
+
+- `KARAKEEP_NEXTAUTH_URL`
+- `KARAKEEP_NEXTAUTH_SECRET`
+- `KARAKEEP_MEILI_MASTER_KEY`
+
+The Compose file maps those values back to the container variable names that
+KaraKeep and Meilisearch actually require.
+
 ## Basic commands
 
 From `src/docker/karakeep/`:

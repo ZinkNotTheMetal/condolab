@@ -17,6 +17,8 @@ services:
       MEILI_ADDR: http://meilisearch:7700
       BROWSER_WEB_URL: http://chrome:9222
       OLLAMA_BASE_URL: http://ollama:11434
+      NEXTAUTH_URL: ${KARAKEEP_NEXTAUTH_URL}
+      NEXTAUTH_SECRET: ${KARAKEEP_NEXTAUTH_SECRET}
     volumes:
       - /condolab/docker/karakeep/data:/data
     labels:

@@ -29,6 +29,13 @@ the experimental AI stack around.
 4. Start Ollama and pull `qwen2.5:3b` before enabling AI tagging.
 5. Start KaraKeep.
 
+Use the prefixed secret names in `.env` or Infisical, then let Compose map them
+back to the container names KaraKeep expects:
+
+- `KARAKEEP_NEXTAUTH_URL` -> `NEXTAUTH_URL`
+- `KARAKEEP_NEXTAUTH_SECRET` -> `NEXTAUTH_SECRET`
+- `KARAKEEP_MEILI_MASTER_KEY` -> `MEILI_MASTER_KEY`
+
 ```bash
 cp .env.example .env
 mkdir -p /condolab/docker/karakeep/data
@@ -42,6 +49,8 @@ docker compose logs -f web
 
 - KaraKeep reaches Ollama over `http://ollama:11434` on the shared
   `ipvlan` network
+- prefixed secret names are mapped in Compose so Infisical can keep KaraKeep
+  secrets distinct from other apps
 - Meilisearch and Chrome remain private to the stack and are not exposed on the
   LAN
 - the application is routed through Traefik as `https://karakeep.zinkzone.tech`
