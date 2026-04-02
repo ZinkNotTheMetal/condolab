@@ -11,8 +11,9 @@ Use these docs in order when bringing up or extending the environment:
 3. [MS-01 Ansible bootstrap](docs/host-setup/ms-01-ansible-bootstrap.md)
 4. [Traefik Compose stack](docs/host-setup/traefik-compose-stack.md)
 5. [Infisical Compose stack](docs/host-setup/infisical-compose-stack.md)
-6. [Naming conventions and standards](docs/standards/naming-conventions.md)
-7. [Developer documentation](docs/developer/README.md)
+6. [Monitoring Compose stack](docs/host-setup/monitoring-compose-stack.md)
+7. [Naming conventions and standards](docs/standards/naming-conventions.md)
+8. [Developer documentation](docs/developer/README.md)
 
 ## Current focus
 

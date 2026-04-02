@@ -7,7 +7,7 @@ api:
   insecure: false
 
 log:
-  level: INFO
+  level: INFO 
 
 accessLog: {}
 
@@ -34,5 +34,15 @@ providers:
   file:
     directory: /etc/traefik/config
     watch: true
+
+certificatesResolvers:
+  cloudflare:
+    acme:
+      storage: /etc/traefik/acme/acme.json
+      dnsChallenge:
+        provider: cloudflare
+        resolvers:
+          - 1.1.1.1:53
+          - 1.0.0.1:53
 
 ping: {}
