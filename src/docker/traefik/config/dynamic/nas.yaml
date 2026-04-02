@@ -1,0 +1,18 @@
+http:
+  routers:
+    nas:
+      rule: Host(`nas.zinkzone.tech`)
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: cloudflare
+      middlewares:
+        - security-headers
+      service: nas
+
+  services:
+    nas:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: http://192.168.0.195:5000
