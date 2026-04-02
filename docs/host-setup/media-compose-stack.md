@@ -58,6 +58,8 @@ docker compose logs -f qbittorrent
 - `qBittorrent` is routed through Traefik as `https://qbittorrent.zinkzone.tech`
 - `qBittorrent` shares the `gluetun` network namespace, so the qBittorrent web
   UI and torrent ports are exposed through the Gluetun container
+- `Gluetun` uses a dedicated bridge network as its primary network and also
+  joins `ipvlan` so Traefik can still reach qBittorrent
 - `Sonarr` is routed through Traefik as `https://sonarr.zinkzone.tech`
 - `Radarr` is routed through Traefik as `https://radarr.zinkzone.tech`
 - `Prowlarr` is routed through Traefik as `https://prowlarr.zinkzone.tech`
@@ -65,6 +67,9 @@ docker compose logs -f qbittorrent
 - `FlareSolverr` is not exposed through Traefik, but it joins the shared
   `ipvlan` network so it can reach external sites for challenge solving
 - qBittorrent also publishes torrent traffic on `6881` TCP and UDP
+- the stack uses `ipvlan` for the general media apps, but the qBittorrent VPN
+  pair also uses a dedicated bridge network because Gluetun expects a more
+  conventional primary Docker interface
 
 ## Filesystem expectations
 

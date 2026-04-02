@@ -64,10 +64,15 @@ docker compose logs -f qbittorrent
 
 - qBittorrent shares the Gluetun network namespace, so torrent traffic stays
   inside the PIA VPN tunnel
+- Gluetun uses a dedicated bridge network as its primary network and also joins
+  `ipvlan` so Traefik can still reach the qBittorrent web UI
 - qBittorrent ingress and torrent ports live on `gluetun`, not on the
   qBittorrent container directly
 - Sonarr and Radarr should connect to qBittorrent at `http://gluetun:8080`
   from inside the Docker network, or through the Traefik URL for manual access
+- the rest of the media services remain on `ipvlan`; only the Gluetun and
+  qBittorrent pair use the extra bridge network because Gluetun needs a more
+  conventional primary Docker interface
 - set `GLUETUN_FIREWALL_OUTBOUND_SUBNETS` to only the LAN ranges you actually
   need; the example allows typical private subnets and may be broader than your
   final setup

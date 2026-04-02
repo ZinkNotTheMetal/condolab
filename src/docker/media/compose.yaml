@@ -35,7 +35,7 @@ services:
       - traefik.http.routers.qbittorrent.middlewares=security-headers@file
       - traefik.http.services.qbittorrent.loadbalancer.server.port=8080
     networks:
-      - media
+      - media_vpn
       - docker_ipvlan
 
   qbittorrent:
@@ -76,7 +76,6 @@ services:
       - traefik.http.routers.sonarr.middlewares=security-headers@file
       - traefik.http.services.sonarr.loadbalancer.server.port=8989
     networks:
-      - media
       - docker_ipvlan
 
   radarr:
@@ -100,7 +99,6 @@ services:
       - traefik.http.routers.radarr.middlewares=security-headers@file
       - traefik.http.services.radarr.loadbalancer.server.port=7878
     networks:
-      - media
       - docker_ipvlan
 
   prowlarr:
@@ -125,7 +123,6 @@ services:
       - traefik.http.routers.prowlarr.middlewares=security-headers@file
       - traefik.http.services.prowlarr.loadbalancer.server.port=9696
     networks:
-      - media
       - docker_ipvlan
 
   flaresolverr:
@@ -136,7 +133,6 @@ services:
       TZ: ${TZ:-America/Chicago}
       LOG_LEVEL: info
     networks:
-      - media
       - docker_ipvlan
 
   overseerr:
@@ -162,12 +158,11 @@ services:
       - traefik.http.routers.overseerr.middlewares=security-headers@file
       - traefik.http.services.overseerr.loadbalancer.server.port=5055
     networks:
-      - media
       - docker_ipvlan
 
 networks:
-  media:
-    internal: true
+  media_vpn:
+    driver: bridge
   docker_ipvlan:
     external: true
     name: ipvlan
