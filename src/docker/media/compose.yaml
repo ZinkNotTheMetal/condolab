@@ -1,18 +1,28 @@
 name: media-suite
 
 services:
-  qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent:latest
-    container_name: media_qbittorrent_ui
+  gluetun:
+    image: qmcgaw/gluetun:v3.39.1
+    container_name: media_gluetun_vpn
     restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
     environment:
-      PUID: ${PUID:-1000}
-      PGID: ${PGID:-1000}
+      VPN_SERVICE_PROVIDER: private internet access
+      VPN_TYPE: openvpn
+      OPENVPN_USER: ${PIA_OPENVPN_USER}
+      OPENVPN_PASSWORD: ${PIA_OPENVPN_PASSWORD}
+      SERVER_REGIONS: ${PIA_SERVER_REGIONS:-US East}
+      FIREWALL: on
+      FIREWALL_OUTBOUND_SUBNETS: ${GLUETUN_FIREWALL_OUTBOUND_SUBNETS:-192.168.0.0/16,10.0.0.0/8,172.16.0.0/12}
+      HEALTH_TARGET_ADDRESS: ${GLUETUN_HEALTH_TARGET_ADDRESS:-1.1.1.1:443}
+      DOT: off
+      LOG_LEVEL: ${GLUETUN_LOG_LEVEL:-info}
       TZ: ${TZ:-America/Chicago}
-      WEBUI_PORT: 8080
     volumes:
-      - /condolab/docker/media/qbittorrent/config:/config
-      - /mnt/Files/Torrent-Data:/data/downloads
+      - /condolab/docker/media/gluetun:/gluetun
     ports:
       - "6881:6881"
       - "6881:6881/udp"
@@ -27,6 +37,23 @@ services:
     networks:
       - media
       - docker_ipvlan
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: media_qbittorrent_ui
+    restart: unless-stopped
+    depends_on:
+      gluetun:
+        condition: service_started
+    network_mode: service:gluetun
+    environment:
+      PUID: ${PUID:-1000}
+      PGID: ${PGID:-1000}
+      TZ: ${TZ:-America/Chicago}
+      WEBUI_PORT: 8080
+    volumes:
+      - /condolab/docker/media/qbittorrent/config:/config
+      - /mnt/Files/Torrent-Data:/data/downloads
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
