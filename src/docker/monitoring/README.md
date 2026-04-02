@@ -10,6 +10,8 @@ Centralized logging and metrics stack for the condo lab.
 - `prometheus` for metrics storage and queries
 - `node_exporter` for host CPU, memory, filesystem, and network metrics
 - `cadvisor` for container CPU, memory, filesystem, and network metrics
+- `dozzle` for fast operator log inspection from the Docker socket
+- `watchtower` for automatic image updates and container refresh
 
 ## Why
 
@@ -38,6 +40,7 @@ early platform services can be debugged before more apps are added.
 mkdir -p /condolab/docker/monitoring/loki
 mkdir -p /condolab/docker/monitoring/grafana
 mkdir -p /condolab/docker/monitoring/prometheus
+mkdir -p /condolab/docker/monitoring/dozzle
 chown -R 10001:10001 /condolab/docker/monitoring/loki
 chown -R 472:472 /condolab/docker/monitoring/grafana
 ```
@@ -63,11 +66,18 @@ docker compose logs -f alloy
 - this stack uses one central collector for the host, not one collector per app
   stack
 - Grafana is routed through Traefik as `https://grafana.zinkzone.tech`
+- Dozzle is routed through Traefik as `https://dozzle.zinkzone.tech`
 - Loki remains internal to the monitoring stack
 - Loki writes as UID `10001` and Grafana writes as UID `472`, so the backing
   directories or ZFS datasets must be owned by those users before first start
 - Prometheus stores metrics under `/condolab/docker/monitoring/prometheus`
 - Node exporter and cAdvisor are internal-only and scraped by Prometheus
+- Dozzle keeps the Docker socket read-only because the goal is log inspection,
+  not container control
+- Watchtower checks all running containers for new images every 6 hours and
+  removes old images after successful updates
+- Automatic updates can restart application containers, so unexpected image
+  changes upstream can still create downtime or behavior changes
 
 ## Collected labels
 

@@ -22,6 +22,8 @@ The stack definition lives in:
 - `prometheus` for metrics storage
 - `node_exporter` for host metrics
 - `cadvisor` for container metrics
+- `dozzle` for quick live container log inspection
+- `watchtower` for automatic container image updates
 
 ## Setup flow
 
@@ -30,7 +32,7 @@ The stack definition lives in:
 2. Set a strong Grafana admin password.
 3. Ensure the external `ipvlan` Docker network already exists.
 4. Create host storage directories or ZFS datasets for Loki, Grafana, and
-   Prometheus.
+   Prometheus, plus Dozzle state.
 5. Start the stack from `src/docker/monitoring/`.
 6. Confirm Grafana loads, Alloy is pushing logs into Loki, and Prometheus is
    scraping the exporters.
@@ -44,6 +46,7 @@ cp .env.example .env
 mkdir -p /condolab/docker/monitoring/loki
 mkdir -p /condolab/docker/monitoring/grafana
 mkdir -p /condolab/docker/monitoring/prometheus
+mkdir -p /condolab/docker/monitoring/dozzle
 chown -R 10001:10001 /condolab/docker/monitoring/loki
 chown -R 472:472 /condolab/docker/monitoring/grafana
 docker compose up -d
@@ -94,9 +97,23 @@ Grafana auto-loads an **MS01 Overview** dashboard that includes:
 ## Access pattern
 
 - Grafana is routed through Traefik as `https://grafana.zinkzone.tech`
+- Dozzle is routed through Traefik as `https://dozzle.zinkzone.tech`
 - Loki stays private inside the monitoring stack network
 - Prometheus, Alloy, node exporter, and cAdvisor stay private inside the
   monitoring stack network
+- Dozzle joins the `ipvlan` network only so operators can reach its web UI
+  through Traefik while Docker socket access stays read-only
+- Watchtower stays internal and checks all running containers for new images
+  every 6 hours, then restarts containers when updates are available
+
+## Update behavior
+
+- Watchtower uses the Docker socket to monitor all running containers on the
+  host
+- Old images are removed after successful updates to reduce image drift and
+  disk usage
+- This improves patch hygiene, but it also means upstream image changes can
+  restart services without a manual maintenance window
 
 ## Related docs
 
