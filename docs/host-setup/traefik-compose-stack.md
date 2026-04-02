@@ -54,6 +54,10 @@ Once the resolver can read `CF_TRAEFIK_API_TOKEN` and `ACME_TRAEFIK_EMAIL`, new
 routers on `websecure` can obtain trusted certificates without opening the app
 directly to the internet.
 
+The resolver now lives in Traefik's static `traefik.yaml` configuration instead
+of CLI flags so startup logs clearly show whether the `cloudflare` resolver was
+loaded.
+
 If you use self-hosted Infisical for secret injection, point the CLI at the
 local instance before starting the stack:
 
