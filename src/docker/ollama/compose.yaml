@@ -1,0 +1,26 @@
+name: experimental-ollama
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama_api
+    restart: unless-stopped
+    volumes:
+      - /condolab/docker/ollama/models:/root/.ollama
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=ipvlan
+      - traefik.http.routers.ollama.rule=Host(`ollama.zinkzone.tech`)
+      - traefik.http.routers.ollama.entrypoints=websecure
+      - traefik.http.routers.ollama.tls=true
+      - traefik.http.routers.ollama.middlewares=security-headers@file
+      - traefik.http.services.ollama.loadbalancer.server.port=11434
+    networks:
+      docker_ipvlan:
+        aliases:
+          - ollama
+
+networks:
+  docker_ipvlan:
+    external: true
+    name: ipvlan
