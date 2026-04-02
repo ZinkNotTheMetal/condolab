@@ -30,6 +30,8 @@ early platform services can be debugged before more apps are added.
 ```bash
 mkdir -p /condolab/docker/monitoring/loki
 mkdir -p /condolab/docker/monitoring/grafana
+chown -R 10001:10001 /condolab/docker/monitoring/loki
+chown -R 472:472 /condolab/docker/monitoring/grafana
 ```
 
 1. Start the stack:
@@ -54,6 +56,8 @@ docker compose logs -f alloy
   stack
 - Grafana is routed through Traefik as `https://grafana.zinkzone.tech`
 - Loki remains internal to the monitoring stack
+- Loki writes as UID `10001` and Grafana writes as UID `472`, so the backing
+  directories or ZFS datasets must be owned by those users before first start
 
 ## Collected labels
 

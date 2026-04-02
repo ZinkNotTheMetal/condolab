@@ -26,7 +26,7 @@ The stack definition lives in:
    `src/docker/monitoring/.env`.
 2. Set a strong Grafana admin password.
 3. Ensure the external `ipvlan` Docker network already exists.
-4. Create host storage directories for Loki and Grafana.
+4. Create host storage directories or ZFS datasets for Loki and Grafana.
 5. Start the stack from `src/docker/monitoring/`.
 6. Confirm Grafana loads and Alloy is pushing logs into Loki.
 
@@ -38,6 +38,8 @@ From `src/docker/monitoring/`:
 cp .env.example .env
 mkdir -p /condolab/docker/monitoring/loki
 mkdir -p /condolab/docker/monitoring/grafana
+chown -R 10001:10001 /condolab/docker/monitoring/loki
+chown -R 472:472 /condolab/docker/monitoring/grafana
 docker compose up -d
 docker compose ps
 docker compose logs -f alloy
@@ -52,6 +54,9 @@ docker compose logs -f alloy
 - Grafana queries Loki through a provisioned data source
 
 Application stacks do not need their own collector sidecar for this first host.
+
+If you back these paths with ZFS datasets instead of plain directories, keep the
+same mount points and apply the same ownership before the first container start.
 
 ## Default labels
 

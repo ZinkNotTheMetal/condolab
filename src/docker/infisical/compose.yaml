@@ -20,7 +20,6 @@ services:
       - traefik.http.routers.infisical.rule=Host(`secrets.zinkzone.tech`)
       - traefik.http.routers.infisical.entrypoints=websecure
       - traefik.http.routers.infisical.tls=true
-      - traefik.http.routers.infisical.tls.certresolver=cloudflare
       - traefik.http.routers.infisical.middlewares=security-headers@file
     networks:
       - infisical
