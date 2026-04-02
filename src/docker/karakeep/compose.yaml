@@ -19,9 +19,6 @@ services:
       OLLAMA_BASE_URL: http://ollama:11434
       NEXTAUTH_URL: ${KARAKEEP_NEXTAUTH_URL}
       NEXTAUTH_SECRET: ${KARAKEEP_NEXTAUTH_SECRET}
-    dns:
-      - 1.1.1.1
-      - 1.0.0.1
     volumes:
       - /condolab/docker/karakeep/data:/data
     labels:
@@ -48,11 +45,9 @@ services:
       - --remote-debugging-address=0.0.0.0
       - --remote-debugging-port=9222
       - --hide-scrollbars
-    dns:
-      - 1.1.1.1
-      - 1.0.0.1
     networks:
       - karakeep
+      - docker_ipvlan
 
   meilisearch:
     image: getmeili/meilisearch:v1.41.0
