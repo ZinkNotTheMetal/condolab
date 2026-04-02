@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     user: "0:0"
     command:
-      - --certificatesresolvers.cloudflare.acme.email=${TRAEFIK_ACME_EMAIL}
+      - --certificatesresolvers.cloudflare.acme.email=${ACME_TRAEFIK_EMAIL}
       - --certificatesresolvers.cloudflare.acme.storage=/etc/traefik/acme/acme.json
       - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
       - --certificatesresolvers.cloudflare.acme.dnschallenge.resolvers=1.1.1.1:53,1.0.0.1:53

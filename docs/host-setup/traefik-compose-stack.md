@@ -28,7 +28,7 @@ The stack definition lives in:
 1. Ensure the shared external `ipvlan` Docker network already exists on the
    target host.
 2. Create the ACME storage file on the host and lock down its permissions.
-3. Store `CF_TRAEFIK_API_TOKEN` and `TRAEFIK_ACME_EMAIL` in Infisical.
+3. Store `CF_TRAEFIK_API_TOKEN` and `ACME_TRAEFIK_EMAIL` in Infisical.
 4. Start the stack from `src/docker/traefik/` with `infisical run`.
 5. Confirm Traefik is healthy before attaching other app stacks.
 6. Update each app stack to join the `ipvlan` network and add Traefik labels.
@@ -50,7 +50,7 @@ docker compose logs -f traefik
 ## TLS note
 
 Traefik is configured to use Let's Encrypt through the Cloudflare DNS challenge.
-Once the resolver can read `CF_TRAEFIK_API_TOKEN` and `TRAEFIK_ACME_EMAIL`, new
+Once the resolver can read `CF_TRAEFIK_API_TOKEN` and `ACME_TRAEFIK_EMAIL`, new
 routers on `websecure` can obtain trusted certificates without opening the app
 directly to the internet.
 
@@ -70,7 +70,7 @@ For automation, use `infisical run` with a machine identity or service token.
 Store these secrets in Infisical:
 
 - `CF_TRAEFIK_API_TOKEN` for Cloudflare DNS updates
-- `TRAEFIK_ACME_EMAIL` for Let's Encrypt registration
+- `ACME_TRAEFIK_EMAIL` for Let's Encrypt registration
 
 ## App integration pattern
 
