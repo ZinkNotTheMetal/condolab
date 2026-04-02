@@ -12,8 +12,9 @@ Use these docs in order when bringing up or extending the environment:
 4. [Traefik Compose stack](docs/host-setup/traefik-compose-stack.md)
 5. [Infisical Compose stack](docs/host-setup/infisical-compose-stack.md)
 6. [Monitoring Compose stack](docs/host-setup/monitoring-compose-stack.md)
-7. [Naming conventions and standards](docs/standards/naming-conventions.md)
-8. [Developer documentation](docs/developer/README.md)
+7. [Plex Compose stack](docs/host-setup/plex-compose-stack.md)
+8. [Naming conventions and standards](docs/standards/naming-conventions.md)
+9. [Developer documentation](docs/developer/README.md)
 
 ## Current focus
 
