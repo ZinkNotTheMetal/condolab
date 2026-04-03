@@ -81,9 +81,10 @@ services:
     networks:
       - docker_ipvlan
 
-  overseerr:
-    image: sctx/overseerr:latest
-    container_name: media_overseerr_ui
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    container_name: media_seerr_ui
+    init: true
     restart: unless-stopped
     environment:
       TZ: ${TZ:-America/Chicago}
@@ -98,11 +99,11 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=ipvlan
-      - traefik.http.routers.overseerr.rule=Host(`overseerr.zinkzone.tech`)
-      - traefik.http.routers.overseerr.entrypoints=websecure
-      - traefik.http.routers.overseerr.tls=true
-      - traefik.http.routers.overseerr.middlewares=security-headers@file
-      - traefik.http.services.overseerr.loadbalancer.server.port=5055
+      - traefik.http.routers.seerr.rule=Host(`seerr.zinkzone.tech`)
+      - traefik.http.routers.seerr.entrypoints=websecure
+      - traefik.http.routers.seerr.tls=true
+      - traefik.http.routers.seerr.middlewares=security-headers@file
+      - traefik.http.services.seerr.loadbalancer.server.port=5055
     networks:
       - docker_ipvlan
 
