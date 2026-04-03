@@ -51,7 +51,7 @@ services:
       WEBUI_PORT: 8080
     volumes:
       - /condolab/docker/qbittorrent-vpn/qbittorrent/config:/config
-      - /mnt/Files/Torrent-Data:/data/downloads
+      - /mnt/Files/Torrent-Data:/downloads
 
 networks:
   qbittorrent_vpn:
