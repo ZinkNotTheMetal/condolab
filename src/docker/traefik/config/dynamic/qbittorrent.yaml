@@ -1,0 +1,18 @@
+http:
+  routers:
+    qbittorrent:
+      rule: Host(`qbittorrent.zinkzone.tech`)
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: cloudflare
+      middlewares:
+        - security-headers
+      service: qbittorrent
+
+  services:
+    qbittorrent:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: http://192.168.0.8:8080

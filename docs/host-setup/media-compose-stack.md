@@ -16,8 +16,6 @@ The stack definition lives in:
 
 ## Included services
 
-- `qBittorrent` for downloads
-- `Gluetun` for PIA VPN routing for qBittorrent
 - `Sonarr` for TV automation
 - `Radarr` for movie automation
 - `Prowlarr` for indexer management
@@ -32,9 +30,8 @@ The stack definition lives in:
    and `/mnt/Media/TV Shows` exist on the host.
 4. Create host config directories for each service under
    `/condolab/docker/media/`.
-5. Set the PIA credentials and Gluetun firewall env vars in `.env`.
-6. Start the stack from `src/docker/media/`.
-7. Open each web UI and finish the service-to-service wiring.
+5. Start the stack from `src/docker/media/`.
+6. Open each web UI and finish the service-to-service wiring.
 
 ## Basic commands
 
@@ -42,8 +39,6 @@ From `src/docker/media/`:
 
 ```bash
 cp .env.example .env
-mkdir -p /condolab/docker/media/gluetun
-mkdir -p /condolab/docker/media/qbittorrent/config
 mkdir -p /condolab/docker/media/sonarr/config
 mkdir -p /condolab/docker/media/radarr/config
 mkdir -p /condolab/docker/media/prowlarr/config
@@ -55,21 +50,14 @@ docker compose logs -f qbittorrent
 
 ## Access pattern
 
-- `qBittorrent` is routed through Traefik as `https://qbittorrent.zinkzone.tech`
-- `qBittorrent` shares the `gluetun` network namespace, so the qBittorrent web
-  UI and torrent ports are exposed through the Gluetun container
-- `Gluetun` uses a dedicated bridge network as its primary network and also
-  joins `ipvlan` so Traefik can still reach qBittorrent
 - `Sonarr` is routed through Traefik as `https://sonarr.zinkzone.tech`
 - `Radarr` is routed through Traefik as `https://radarr.zinkzone.tech`
 - `Prowlarr` is routed through Traefik as `https://prowlarr.zinkzone.tech`
 - `Overseerr` is routed through Traefik as `https://overseerr.zinkzone.tech`
 - `FlareSolverr` is not exposed through Traefik, but it joins the shared
   `ipvlan` network so it can reach external sites for challenge solving
-- qBittorrent also publishes torrent traffic on `6881` TCP and UDP
-- the stack uses `ipvlan` for the general media apps, but the qBittorrent VPN
-  pair also uses a dedicated bridge network because Gluetun expects a more
-  conventional primary Docker interface
+- qBittorrent now lives in the dedicated VPN stack and is reached by Sonarr and
+  Radarr through `http://192.168.0.8:8080`
 
 ## Filesystem expectations
 
@@ -81,17 +69,9 @@ docker compose logs -f qbittorrent
 Keep the same downloads path visible to qBittorrent, Sonarr, and Radarr so the
 automation workflow can import completed files without path remapping.
 
-## VPN notes
-
-- Gluetun uses PIA over OpenVPN and provides the kill-switch boundary for
-  qBittorrent
-- qBittorrent should be configured from Sonarr and Radarr using
-  `http://gluetun:8080` from inside the stack
-- Review `GLUETUN_FIREWALL_OUTBOUND_SUBNETS` before first start so LAN access is
-  only as broad as you intend
-
 ## Related docs
 
+- [qBittorrent VPN Compose stack](qbittorrent-vpn-compose-stack.md)
 - [Plex Compose stack](plex-compose-stack.md)
 - [Monitoring Compose stack](monitoring-compose-stack.md)
 - [Traefik Compose stack](traefik-compose-stack.md)
