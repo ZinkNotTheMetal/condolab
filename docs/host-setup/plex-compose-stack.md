@@ -19,6 +19,7 @@ configuration and temporary transcode data on the Docker host.
 - stores transcode scratch data under `/condolab/docker/plex/transcode`
 - routes Plex through Traefik as `https://plex.zinkzone.tech`
 - keeps direct port `32400` available for Plex-native clients that expect it
+- exposes Intel GPU metrics on port `9101` through `intel-gpu-exporter`
 
 ## Setup flow
 
@@ -56,6 +57,8 @@ docker compose logs -f plex
 ## Intel iGPU notes
 
 - this stack mounts `/dev/dri` so Plex can use Intel Quick Sync on the MS-01
+- `intel-gpu-exporter` shares `/dev/dri` so Prometheus can observe GPU load and
+  memory use while Plex and Ollama run
 - set `VIDEO_GID` and `RENDER_GID` in `.env` to the host group IDs from:
 
   ```bash

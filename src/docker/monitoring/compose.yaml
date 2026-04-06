@@ -14,6 +14,19 @@ services:
     networks:
       - monitoring
 
+  intel-gpu-exporter:
+    image: ghcr.io/crushee/intel_gpu_exporter:latest
+    container_name: intel_gpu_exporter
+    restart: unless-stopped
+    devices:
+      - /dev/dri:/dev/dri
+    ports:
+      - "9101:9101"
+    cap_add:
+      - SYS_ADMIN
+    networks:
+      - monitoring
+
   prometheus:
     image: prom/prometheus:v3
     container_name: monitoring_prometheus_api
@@ -25,6 +38,8 @@ services:
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - /condolab/docker/monitoring/prometheus:/prometheus
+    extra_hosts:
+      - host.docker.internal:host-gateway
     networks:
       - monitoring
 

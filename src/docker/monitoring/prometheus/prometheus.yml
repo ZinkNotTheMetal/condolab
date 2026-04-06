@@ -22,3 +22,8 @@ scrape_configs:
     static_configs:
       - targets:
           - monitoring_alloy_collector:12345
+
+  - job_name: intel-gpu
+    static_configs:
+      - targets:
+          - intel_gpu_exporter:9101
