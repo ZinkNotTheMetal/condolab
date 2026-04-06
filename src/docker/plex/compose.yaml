@@ -14,6 +14,9 @@ services:
       VERSION: docker
       PLEX_CLAIM: ${PLEX_CLAIM}
       ADVERTISE_IP: ${ADVERTISE_IP}
+    group_add:
+      - ${VIDEO_GID}
+      - ${RENDER_GID}
     labels:
       - traefik.enable=true
       - traefik.docker.network=ipvlan
@@ -24,6 +27,8 @@ services:
       - traefik.http.services.plex.loadbalancer.server.port=32400
     ports:
       - "32400:32400"
+    devices:
+      - /dev/dri:/dev/dri
     volumes:
       - /condolab/docker/plex/config:/config
       - /condolab/docker/plex/transcode:/transcode

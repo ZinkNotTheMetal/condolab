@@ -24,11 +24,14 @@ configuration and temporary transcode data on the Docker host.
 
 1. Confirm Ansible has mounted `/mnt/Media` from the NAS.
 2. Copy `src/docker/plex/.env.example` to `src/docker/plex/.env`.
-3. Set `PUID`, `PGID`, timezone, and optional `PLEX_CLAIM`.
+3. Set `PUID`, `PGID`, timezone, `VIDEO_GID`, `RENDER_GID`, and optional
+   `PLEX_CLAIM`.
 4. Create the local config and transcode directories.
 5. Start the stack from `src/docker/plex/`.
 6. Complete Plex library setup using the Movies and TV paths already mounted in
    the container.
+7. Enable hardware transcoding in Plex and verify the container can see
+   `/dev/dri`.
 
 ## Basic commands
 
@@ -49,6 +52,18 @@ docker compose logs -f plex
 - Plex config stays local so metadata and database files are fast to access
 - transcode data stays local because it is temporary working data rather than
   library data worth replicating
+
+## Intel iGPU notes
+
+- this stack mounts `/dev/dri` so Plex can use Intel Quick Sync on the MS-01
+- set `VIDEO_GID` and `RENDER_GID` in `.env` to the host group IDs from:
+
+  ```bash
+  getent group video render
+  ```
+
+- after startup, enable hardware acceleration in the Plex UI under transcoder
+  settings and verify active transcodes show `(hw)`
 
 ## Related docs
 

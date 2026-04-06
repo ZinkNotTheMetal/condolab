@@ -19,6 +19,8 @@ app stacks.
 - routes Ollama through Traefik as `https://ollama.zinkzone.tech`
 - joins the shared `ipvlan` Docker network so other app stacks can call the API
   directly as `http://ollama:11434`
+- mounts `/dev/dri` and enables Vulkan so the MS-01 can attempt Intel iGPU
+  acceleration
 
 ## Setup flow
 
@@ -27,6 +29,8 @@ app stacks.
 3. Start the stack from `src/docker/ollama/`.
 4. Pull `qwen2.5:3b` into the local model cache.
 5. Confirm the model is available before wiring app stacks to it.
+6. Check the startup logs for Vulkan or GPU detection before relying on the
+   stack for latency-sensitive workloads.
 
 ## Basic commands
 
@@ -55,6 +59,33 @@ docker compose exec ollama ollama list
 - route the external API through Traefik at `https://ollama.zinkzone.tech`
 - let app stacks on `ipvlan` call `http://ollama:11434` directly instead of
   creating another dedicated app network
+
+## Validation and benchmarking
+
+On `ms01`, confirm the container can see the GPU device:
+
+```bash
+cd /condolab/src/docker/ollama
+docker compose exec ollama ls /dev/dri
+docker compose logs ollama | grep -i -E 'vulkan|gpu|intel|render'
+```
+
+Then run one repeatable request before and after the GPU change and compare the
+reported `tokens_per_second` value:
+
+```bash
+curl -s http://127.0.0.1:11434/api/generate \
+  -d '{"model":"qwen2.5:3b","prompt":"Explain DNS briefly.","stream":false}' \
+  | jq '{
+    total_duration_s:(.total_duration/1000000000),
+    eval_count,
+    eval_duration_s:(.eval_duration/1000000000),
+    tokens_per_second:(.eval_count / (.eval_duration/1000000000))
+  }'
+```
+
+If the logs never mention Vulkan or GPU initialization, assume the request is
+still CPU-bound.
 
 ## Related docs
 

@@ -1,0 +1,28 @@
+name: utility-cloudbeaver
+
+services:
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:latest
+    container_name: utility_cloudbeaver
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      JAVA_OPTS: ${JAVA_OPTS}
+    volumes:
+      - /condolab/docker/cloudbeaver/workspace:/opt/cloudbeaver/workspace
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=ipvlan
+      - traefik.http.routers.cloudbeaver.rule=Host(`query.zinkzone.tech`)
+      - traefik.http.routers.cloudbeaver.entrypoints=websecure
+      - traefik.http.routers.cloudbeaver.tls=true
+      - traefik.http.routers.cloudbeaver.middlewares=security-headers@file
+      - traefik.http.services.cloudbeaver.loadbalancer.server.port=8978
+    networks:
+      - docker_ipvlan
+
+networks:
+  docker_ipvlan:
+    external: true
+    name: ipvlan

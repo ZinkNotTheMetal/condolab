@@ -14,6 +14,8 @@ Primary documentation for the condo lab.
 - [Plex Compose stack](host-setup/plex-compose-stack.md)
 - [Ollama Compose stack](host-setup/ollama-compose-stack.md)
 - [KaraKeep Compose stack](host-setup/karakeep-compose-stack.md)
+- [SearXNG Compose stack](host-setup/searxng-compose-stack.md)
+- [CloudBeaver Compose stack](host-setup/cloudbeaver-compose-stack.md)
 
 ### Standards
 
@@ -40,4 +42,7 @@ For the MS-01, the expected early sequence is:
 6. stand up the Plex stack for NAS-backed media playback
 7. optionally stand up the Ollama experimental stack for local inference
 8. optionally stand up the KaraKeep stack for bookmark capture and AI-assisted tagging
-9. continue with standards and service-specific setup
+9. optionally stand up the SearXNG stack for private metasearch and future AI
+   search backends
+10. optionally stand up the CloudBeaver stack for browser-based database access
+11. continue with standards and service-specific setup
