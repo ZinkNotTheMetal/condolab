@@ -12,7 +12,7 @@ Centralized logging and metrics stack for the condo lab.
 - `cadvisor` for container CPU, memory, filesystem, and network metrics
 - `dozzle` for fast operator log inspection from the Docker socket
 - `watchtower` for automatic image updates and container refresh
-- `intel-gpu-exporter` for Intel iGPU metrics on port `9101`
+- `intel-gpu-exporter` for Intel iGPU metrics on port `9100`
 
 ## Why
 

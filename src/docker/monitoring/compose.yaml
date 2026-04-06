@@ -15,15 +15,16 @@ services:
       - monitoring
 
   intel-gpu-exporter:
-    image: ghcr.io/clambin/intel-gpu-exporter:v0.6.1
+    image: ghcr.io/clambin/intel-gpu-exporter:0.6.1
     container_name: monitoring_intel_gpu_exporter
     restart: unless-stopped
+    privileged: true
+    pid: host
     devices:
       - /dev/dri:/dev/dri
+    command: ["--prom.addr", ":9100"]
     ports:
-      - "9101:9101"
-    cap_add:
-      - SYS_ADMIN
+      - "9100:9100"
     networks:
       - monitoring
 
