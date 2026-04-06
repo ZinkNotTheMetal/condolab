@@ -7,7 +7,6 @@ Plex media server stack for the condo lab.
 - Plex Media Server
 - NAS-backed movie and TV libraries
 - local transcode path on the host
-- Intel GPU exporter on port `9101` for Quick Sync metrics
 - Traefik labels for the `plex.zinkzone.tech` endpoint
 
 ## Why
@@ -57,8 +56,6 @@ docker compose logs -f plex
   should not be replicated with the media library
 - Plex can use the Intel iGPU through `/dev/dri`, but hardware transcoding still
   needs to be enabled in the Plex server settings after first login
-- `intel-gpu-exporter` exposes Intel GPU metrics on port `9101` so Prometheus can
-  scrape usage during transcodes or Ollama workloads
 - the stack publishes port `32400` directly for Plex-native clients while also
   exposing Plex through Traefik at `https://plex.zinkzone.tech`
 - centralized logs will flow into Loki automatically through the host collector
