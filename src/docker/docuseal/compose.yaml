@@ -7,6 +7,7 @@ services:
     restart: unless-stopped
     environment:
       FORCE_SSL: "true"
+      HOST: sign.zinkzone.tech
     volumes:
       - /condolab/docker/docuseal/data:/data/docuseal
     labels:
@@ -15,10 +16,16 @@ services:
       - traefik.http.routers.docuseal.rule=Host(`sign.zinkzone.tech`)
       - traefik.http.routers.docuseal.entrypoints=websecure
       - traefik.http.routers.docuseal.tls=true
-      - traefik.http.routers.docuseal.middlewares=security-headers@file,docuseal-proxy-headers,docuseal-response-headers
+      - traefik.http.routers.docuseal.middlewares=docuseal-security-headers,docuseal-proxy-headers
+      - traefik.http.middlewares.docuseal-security-headers.headers.browserxssfilter=true
+      - traefik.http.middlewares.docuseal-security-headers.headers.contenttypenosniff=true
+      - traefik.http.middlewares.docuseal-security-headers.headers.framedeny=true
+      - traefik.http.middlewares.docuseal-security-headers.headers.referrerpolicy=same-origin
+      - traefik.http.middlewares.docuseal-security-headers.headers.stsincludesubdomains=true
+      - traefik.http.middlewares.docuseal-security-headers.headers.stspreload=true
+      - traefik.http.middlewares.docuseal-security-headers.headers.stsseconds=31536000
       - traefik.http.middlewares.docuseal-proxy-headers.headers.customrequestheaders.X-Forwarded-Proto=https
       - traefik.http.middlewares.docuseal-proxy-headers.headers.customrequestheaders.X-Forwarded-Host=sign.zinkzone.tech
-      - traefik.http.middlewares.docuseal-response-headers.headers.customresponseheaders.Referrer-Policy=same-origin
       - traefik.http.services.docuseal.loadbalancer.passhostheader=true
       - traefik.http.services.docuseal.loadbalancer.server.port=3000
     networks:

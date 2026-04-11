@@ -50,12 +50,14 @@ docker compose logs -f docuseal
   persisting the generated secret across restarts
 - `FORCE_SSL=true` is set because TLS terminates at Traefik and DocuSeal should
   treat external requests as HTTPS
+- `HOST=sign.zinkzone.tech` is set explicitly so DocuSeal uses the routed host
+  consistently for link generation and reverse-proxy aware request handling
 - the Traefik router also injects explicit `X-Forwarded-Proto` and
   `X-Forwarded-Host` headers so DocuSeal can validate request origin correctly
   and avoid reverse-proxy `422 InvalidAuthenticityToken` failures
-- the DocuSeal router overrides the shared `Referrer-Policy` to `same-origin`
-  because DocuSeal signing flows can fail with a `null` origin when the global
-  policy is set to `no-referrer`
+- the DocuSeal router uses its own security-headers middleware instead of the
+  shared middleware so `Referrer-Policy` stays at `same-origin`, which avoids
+  `null` origin failures in the signing flow
 - keep this route private or protected at the edge because the first run creates
   the initial admin account in the web UI
 
