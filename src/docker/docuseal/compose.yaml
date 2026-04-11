@@ -1,0 +1,29 @@
+name: utility-docuseal
+
+services:
+  docuseal:
+    image: docuseal/docuseal:latest
+    container_name: utility_docuseal
+    restart: unless-stopped
+    environment:
+      FORCE_SSL: "true"
+    volumes:
+      - /condolab/docker/docuseal/data:/data/docuseal
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=ipvlan
+      - traefik.http.routers.docuseal.rule=Host(`sign.zinkzone.tech`)
+      - traefik.http.routers.docuseal.entrypoints=websecure
+      - traefik.http.routers.docuseal.tls=true
+      - traefik.http.routers.docuseal.middlewares=security-headers@file
+      - traefik.http.services.docuseal.loadbalancer.server.port=3000
+    networks:
+      - docuseal
+      - docker_ipvlan
+
+networks:
+  docuseal:
+    internal: true
+  docker_ipvlan:
+    external: true
+    name: ipvlan
