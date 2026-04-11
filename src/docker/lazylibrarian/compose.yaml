@@ -16,7 +16,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=ipvlan
-      - traefik.http.routers.lazylibrarian.rule=Host(`libary.zinkzone.tech`)
+      - traefik.http.routers.lazylibrarian.rule=Host(`library.zinkzone.tech`)
       - traefik.http.routers.lazylibrarian.entrypoints=websecure
       - traefik.http.routers.lazylibrarian.tls=true
       - traefik.http.routers.lazylibrarian.middlewares=security-headers@file

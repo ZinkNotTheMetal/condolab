@@ -14,7 +14,7 @@ library.
 
 ## Included behavior
 
-- runs LazyLibrarian behind Traefik as `https://libary.zinkzone.tech`
+- runs LazyLibrarian behind Traefik as `https://library.zinkzone.tech`
 - stores LazyLibrarian config under `/condolab/docker/lazylibrarian/config`
 - reads downloads from `/mnt/Files/Torrent-Data`
 - reads and manages the books library under `/mnt/Media/Books`
