@@ -53,6 +53,9 @@ docker compose logs -f docuseal
 - the Traefik router also injects explicit `X-Forwarded-Proto` and
   `X-Forwarded-Host` headers so DocuSeal can validate request origin correctly
   and avoid reverse-proxy `422 InvalidAuthenticityToken` failures
+- the DocuSeal router overrides the shared `Referrer-Policy` to `same-origin`
+  because DocuSeal signing flows can fail with a `null` origin when the global
+  policy is set to `no-referrer`
 - keep this route private or protected at the edge because the first run creates
   the initial admin account in the web UI
 
