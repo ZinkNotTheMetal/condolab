@@ -15,7 +15,10 @@ services:
       - traefik.http.routers.docuseal.rule=Host(`sign.zinkzone.tech`)
       - traefik.http.routers.docuseal.entrypoints=websecure
       - traefik.http.routers.docuseal.tls=true
-      - traefik.http.routers.docuseal.middlewares=security-headers@file
+      - traefik.http.routers.docuseal.middlewares=docuseal-proxy-headers,security-headers@file
+      - traefik.http.middlewares.docuseal-proxy-headers.headers.customrequestheaders.X-Forwarded-Proto=https
+      - traefik.http.middlewares.docuseal-proxy-headers.headers.customrequestheaders.X-Forwarded-Host=sign.zinkzone.tech
+      - traefik.http.services.docuseal.loadbalancer.passhostheader=true
       - traefik.http.services.docuseal.loadbalancer.server.port=3000
     networks:
       - docuseal

@@ -50,6 +50,9 @@ docker compose logs -f docuseal
   persisting the generated secret across restarts
 - `FORCE_SSL=true` is set because TLS terminates at Traefik and DocuSeal should
   treat external requests as HTTPS
+- the Traefik router also injects explicit `X-Forwarded-Proto` and
+  `X-Forwarded-Host` headers so DocuSeal can validate request origin correctly
+  and avoid reverse-proxy `422 InvalidAuthenticityToken` failures
 - keep this route private or protected at the edge because the first run creates
   the initial admin account in the web UI
 
