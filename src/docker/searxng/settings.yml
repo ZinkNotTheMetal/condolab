@@ -5,7 +5,7 @@ general:
   instance_name: ZinkZone Search
 
 server:
-  secret_key: ultrasecretkey
+  secret_key: ultrasecretkey #replace on server
   limiter: false
   image_proxy: true
 
@@ -17,10 +17,15 @@ search:
     - html
     - json
     - rss
-
 ui:
   default_theme: simple
   query_in_title: false
-
-redis:
+valkey:
   url: redis://valkey:6379/0
+engines:
+  - name: karmasearch
+    disabled: true
+  - name: ahmia
+    disabled: true
+  - name: torch
+    disabled: true

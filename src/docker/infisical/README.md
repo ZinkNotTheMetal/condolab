@@ -23,7 +23,7 @@ broader service rollout begins.
 
 1. Copy `.env.example` to `.env`.
 2. Replace placeholder values with generated secrets and set `SITE_URL` to the
-   final Traefik-routed hostname, such as `https://infisical.home.arpa`.
+   final Traefik-routed hostname, such as `https://secrets.zinkzone.tech`.
 3. If this is a fresh Postgres 18 deployment, ensure any previous database files
    under `/condolab/databases/infisical/postgres` are removed before first
    start.
@@ -51,4 +51,4 @@ docker compose logs -f backend
   can reach it over the shared lab network while `db` and `redis` stay on the
   internal app network
 - ensure the external `ipvlan` network already exists before starting the stack
-- the default labels publish Infisical on `https://infisical.home.arpa`
+- the default labels publish Infisical on `https://secrets.zinkzone.tech`

@@ -25,7 +25,7 @@ The stack definition lives in:
 1. Review the stack files in `src/docker/infisical/`.
 2. Copy `src/docker/infisical/.env.example` to `src/docker/infisical/.env`.
 3. Replace placeholder values with generated secrets and set `SITE_URL` to
-   `https://infisical.home.arpa` or the final routed hostname you choose.
+   `https://secrets.zinkzone.tech` or the final routed hostname you choose.
 4. If this is a fresh Postgres 18 deployment, remove any old database files from
     `/condolab/databases/infisical/postgres` before the first start.
 5. Ensure the external `ipvlan` Docker network already exists.
@@ -59,7 +59,7 @@ docker compose logs -f backend
 - back up PostgreSQL data before upgrades or major changes
 - the Postgres 18 container expects the host mount at `/var/lib/postgresql`
 - ensure the external `ipvlan` Docker network exists before first start
-- the default stack labels route Infisical as `https://infisical.home.arpa`
+- the default stack labels route Infisical as `https://secrets.zinkzone.tech`
 - if Pi-hole or another DNS server is used, point the chosen hostname at the
   Traefik `ipvlan` IP rather than the container IP
 

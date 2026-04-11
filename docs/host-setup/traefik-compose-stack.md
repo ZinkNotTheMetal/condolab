@@ -92,7 +92,7 @@ Each app stack should:
 ## DNS and naming
 
 - keep service hostnames aligned with the naming standard, such as
-  `traefik.home.arpa` or `infisical.home.arpa`
+  `traefik.zinkzone.tech` or `secrets.zinkzone.tech`
 - prefer stable DNS names over container names or host-specific addresses
 - point Pi-hole records for routed apps at the Traefik `ipvlan` address
 
