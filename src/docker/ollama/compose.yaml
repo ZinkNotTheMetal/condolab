@@ -5,6 +5,10 @@ services:
     image: ollama/ollama:latest
     container_name: ollama_api
     restart: unless-stopped
+    environment:
+      OLLAMA_VULKAN: "1"
+    devices:
+      - /dev/dri:/dev/dri
     volumes:
       - /condolab/docker/ollama/models:/root/.ollama
     labels:

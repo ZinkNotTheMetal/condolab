@@ -12,6 +12,7 @@ Centralized logging and metrics stack for the condo lab.
 - `cadvisor` for container CPU, memory, filesystem, and network metrics
 - `dozzle` for fast operator log inspection from the Docker socket
 - `watchtower` for automatic image updates and container refresh
+- `intel-gpu-exporter` for Intel iGPU metrics on port `9100`
 
 ## Why
 
@@ -72,6 +73,8 @@ docker compose logs -f alloy
   directories or ZFS datasets must be owned by those users before first start
 - Prometheus stores metrics under `/condolab/docker/monitoring/prometheus`
 - Node exporter and cAdvisor are internal-only and scraped by Prometheus
+- Prometheus scrapes `intel-gpu-exporter` directly on the internal monitoring
+  network
 - Dozzle keeps the Docker socket read-only because the goal is log inspection,
   not container control
 - Watchtower checks all running containers for new images every 6 hours and
@@ -93,6 +96,7 @@ docker compose logs -f alloy
 - host disk and network via `node_exporter`
 - per-container CPU and memory via `cadvisor`
 - per-container filesystem and network via `cadvisor`
+- Intel iGPU utilization and memory metrics via `intel-gpu-exporter`
 
 ## Grafana usage
 

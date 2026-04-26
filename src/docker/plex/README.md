@@ -22,7 +22,8 @@ host only for Plex configuration and temporary transcode files.
 ## Usage
 
 1. Copy `.env.example` to `.env`.
-2. Set the correct `PUID`, `PGID`, and optional `PLEX_CLAIM` token.
+2. Set the correct `PUID`, `PGID`, `VIDEO_GID`, `RENDER_GID`, and optional
+   `PLEX_CLAIM` token.
 3. Create the local config and transcode paths:
 
 ```bash
@@ -53,6 +54,8 @@ docker compose logs -f plex
 - the NAS media mounts come from the Ansible-managed `/mnt/Media` mount
 - transcode files can remain local to the machine because they are temporary and
   should not be replicated with the media library
+- Plex can use the Intel iGPU through `/dev/dri`, but hardware transcoding still
+  needs to be enabled in the Plex server settings after first login
 - the stack publishes port `32400` directly for Plex-native clients while also
   exposing Plex through Traefik at `https://plex.zinkzone.tech`
 - centralized logs will flow into Loki automatically through the host collector

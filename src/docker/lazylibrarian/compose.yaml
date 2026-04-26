@@ -1,0 +1,30 @@
+name: utility-lazylibrarian
+
+services:
+  lazylibrarian:
+    image: lscr.io/linuxserver/lazylibrarian:latest
+    container_name: utility_lazylibrarian
+    restart: unless-stopped
+    environment:
+      PUID: "1000"
+      PGID: "1000"
+      TZ: America/Chicago
+    volumes:
+      - /condolab/docker/lazylibrarian/config:/config
+      - /mnt/Files/Torrent-Data:/downloads
+      - /mnt/Media/Books:/books
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=ipvlan
+      - traefik.http.routers.lazylibrarian.rule=Host(`library.zinkzone.tech`)
+      - traefik.http.routers.lazylibrarian.entrypoints=websecure
+      - traefik.http.routers.lazylibrarian.tls=true
+      - traefik.http.routers.lazylibrarian.middlewares=security-headers@file
+      - traefik.http.services.lazylibrarian.loadbalancer.server.port=5299
+    networks:
+      - docker_ipvlan
+
+networks:
+  docker_ipvlan:
+    external: true
+    name: ipvlan

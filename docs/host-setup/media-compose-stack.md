@@ -53,7 +53,7 @@ docker compose logs -f qbittorrent
 - `Sonarr` is routed through Traefik as `https://sonarr.zinkzone.tech`
 - `Radarr` is routed through Traefik as `https://radarr.zinkzone.tech`
 - `Prowlarr` is routed through Traefik as `https://prowlarr.zinkzone.tech`
-- `Overseerr` is routed through Traefik as `https://overseerr.zinkzone.tech`
+- `Seerr` is routed through Traefik as `https://seerr.zinkzone.tech`
 - `FlareSolverr` is not exposed through Traefik, but it joins the shared
   `ipvlan` network so it can reach external sites for challenge solving
 - qBittorrent now lives in the dedicated VPN stack and is reached by Sonarr and

@@ -52,7 +52,7 @@ docker compose logs -f qbittorrent
 - `https://sonarr.zinkzone.tech`
 - `https://radarr.zinkzone.tech`
 - `https://prowlarr.zinkzone.tech`
-- `https://overseerr.zinkzone.tech`
+- `https://seerr.zinkzone.tech`
 
 ## Notes
 

@@ -14,7 +14,9 @@ Use these docs in order when bringing up or extending the environment:
 6. [Monitoring Compose stack](docs/host-setup/monitoring-compose-stack.md)
 7. [Plex Compose stack](docs/host-setup/plex-compose-stack.md)
 8. [Naming conventions and standards](docs/standards/naming-conventions.md)
-9. [Developer documentation](docs/developer/README.md)
+9. [SearXNG Compose stack](docs/host-setup/searxng-compose-stack.md)
+10. [CloudBeaver Compose stack](docs/host-setup/cloudbeaver-compose-stack.md)
+11. [Developer documentation](docs/developer/README.md)
 
 ## Current focus
 
