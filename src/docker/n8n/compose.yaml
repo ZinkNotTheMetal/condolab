@@ -1,0 +1,67 @@
+name: n8n
+
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: n8n_app
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      N8N_HOST: n8n.zinkzone.tech
+      N8N_PORT: 5678
+      N8N_PROTOCOL: https
+      WEBHOOK_URL: https://n8n.zinkzone.tech/
+      GENERIC_TIMEZONE: America/Chicago
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}
+      DB_TYPE: postgresdb
+      DB_POSTGRESDB_HOST: db
+      DB_POSTGRESDB_PORT: 5432
+      DB_POSTGRESDB_DATABASE: ${N8N_POSTGRES_DB}
+      DB_POSTGRESDB_USER: ${N8N_POSTGRES_USER}
+      DB_POSTGRESDB_PASSWORD: ${N8N_POSTGRES_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - /condolab/docker/n8n/data:/home/node/.n8n
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=ipvlan
+      - traefik.http.routers.n8n.rule=Host(`n8n.zinkzone.tech`)
+      - traefik.http.routers.n8n.entrypoints=websecure
+      - traefik.http.routers.n8n.tls=true
+      - traefik.http.routers.n8n.middlewares=security-headers@file
+      - traefik.http.routers.n8n.service=n8n
+      - traefik.http.services.n8n.loadbalancer.server.port=5678
+    networks:
+      - n8n
+      - docker_ipvlan
+  db:
+    image: postgres:16-alpine
+    container_name: n8n_db
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${N8N_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${N8N_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${N8N_POSTGRES_DB}
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready --username=${N8N_POSTGRES_USER} --dbname=${N8N_POSTGRES_DB}
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    volumes:
+      - /condolab/databases/n8n/postgres:/var/lib/postgresql/data
+    networks:
+      - n8n
+networks:
+  n8n:
+    internal: true
+  docker_ipvlan:
+    external: true
+    name: ipvlan
