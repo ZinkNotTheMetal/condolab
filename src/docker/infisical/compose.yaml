@@ -2,7 +2,7 @@ name: infisical
 
 services:
   backend:
-    image: infisical/infisical:v0.159.3
+    image: infisical/infisical:v0.159.22
     container_name: infisical
     restart: unless-stopped
     depends_on:
