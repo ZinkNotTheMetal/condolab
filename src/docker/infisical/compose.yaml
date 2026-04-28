@@ -2,8 +2,8 @@ name: infisical
 
 services:
   backend:
-    image: infisical/infisical:v0.159.3
-    container_name: infisical_backend
+    image: infisical/infisical:v0.159.22
+    container_name: infisical
     restart: unless-stopped
     depends_on:
       db:
@@ -21,6 +21,8 @@ services:
       - traefik.http.routers.infisical.entrypoints=websecure
       - traefik.http.routers.infisical.tls=true
       - traefik.http.routers.infisical.middlewares=security-headers@file
+      - traefik.http.routers.infisical.service=infisical
+      - traefik.http.services.infisical.loadbalancer.server.port=8080
     networks:
       - infisical
       - docker_ipvlan
