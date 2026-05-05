@@ -17,8 +17,10 @@ services:
     volumes:
       - ./traefik.yaml:/etc/traefik/traefik.yaml:ro
       - ./config:/etc/traefik/config:ro
-      - /condolab/docker/traefik/certs/acme.json:/etc/traefik/acme/acme.json
+      - /condolab/docker/traefik/acme/acme.json:/etc/traefik/acme/acme.json
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    extra_hosts:
+      - host.docker.internal:host-gateway
     networks:
       - docker_ipvlan
 

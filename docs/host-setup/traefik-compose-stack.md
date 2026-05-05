@@ -38,13 +38,25 @@ The stack definition lives in:
 From `src/docker/traefik/`:
 
 ```bash
-mkdir -p /condolab/docker/traefik/acme
-touch /condolab/docker/traefik/acme/acme.json
-chmod 600 /condolab/docker/traefik/acme/acme.json
+just init-traefik-acme
 infisical run --domain=https://secrets.zinkzone.tech \
   --env=Production -- docker compose up -d
 docker compose ps
 docker compose logs -f traefik
+```
+
+## Recover from a bad ACME mount
+
+If Traefik fails with `not a directory` while mounting `acme.json`, the host path
+was created as a directory instead of the ACME storage file. Remove the stale
+container and bad path before recreating the stack:
+
+```bash
+docker rm core_traefik_edge
+sudo rm -rf /condolab/docker/traefik/certs/acme.json
+just init-traefik-acme
+infisical run --domain=https://secrets.zinkzone.tech \
+  --env=Production -- docker compose up -d --force-recreate
 ```
 
 ## TLS note

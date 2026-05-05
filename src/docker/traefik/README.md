@@ -28,9 +28,7 @@ service can publish itself with labels instead of bespoke proxy files.
 3. Start the stack with Infisical-provided secrets:
 
 ```bash
-mkdir -p /condolab/docker/traefik/acme
-touch /condolab/docker/traefik/acme/acme.json
-chmod 600 /condolab/docker/traefik/acme/acme.json
+just init-traefik-acme
 infisical run --domain=https://secrets.zinkzone.tech \
   --env=Production -- docker compose up -d
 ```
@@ -57,6 +55,21 @@ docker compose logs -f traefik
   environment variable the ACME provider expects.
 - Future app stacks should join the external `ipvlan` network and set
   `traefik.enable=true` plus the matching router labels.
+
+## Recover from a bad ACME mount
+
+If Docker reports that `/condolab/docker/traefik/certs/acme.json` is not a
+directory, an older Compose path likely caused Docker to create the file path as
+a directory. Remove the bad container and stale directory, then recreate the
+stack with the current Compose file:
+
+```bash
+docker rm core_traefik_edge
+sudo rm -rf /condolab/docker/traefik/certs/acme.json
+just init-traefik-acme
+infisical run --domain=https://secrets.zinkzone.tech \
+  --env=Production -- docker compose up -d --force-recreate
+```
 
 ## Example app labels
 
