@@ -57,7 +57,7 @@ docker compose logs -f qbittorrent
 - `FlareSolverr` is not exposed through Traefik, but it joins the shared
   `ipvlan` network so it can reach external sites for challenge solving
 - qBittorrent now lives in the dedicated VPN stack and is reached by Sonarr and
-  Radarr through `http://192.168.0.8:8080`
+  Radarr through `http://$(just ms01-host):8080`
 
 ## Filesystem expectations
 
