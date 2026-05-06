@@ -24,8 +24,9 @@ services:
       - traefik.http.routers.infisical.service=infisical
       - traefik.http.services.infisical.loadbalancer.server.port=8080
     networks:
-      - infisical
-      - docker_ipvlan
+      infisical:
+      docker_ipvlan:
+        ipv4_address: 192.168.200.11
   db:
     image: postgres:18.3-alpine
     container_name: infisical_db
@@ -42,7 +43,7 @@ services:
     volumes:
       - /condolab/databases/infisical/postgres:/var/lib/postgresql
     networks:
-      - infisical
+      infisical:
   redis:
     image: redis:8.6.2-alpine
     container_name: infisical_redis
@@ -54,7 +55,7 @@ services:
     volumes:
       - /condolab/docker/infisical/redis:/data
     networks:
-      - infisical
+      infisical:
 networks:
   infisical:
     internal: true
