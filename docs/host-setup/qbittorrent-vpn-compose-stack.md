@@ -45,10 +45,10 @@ docker compose logs -f gluetun
 
 ## Access pattern
 
-- Traefik routes `https://qbittorrent.zinkzone.tech` to `http://192.168.0.8:8080`
-- qBittorrent is also available directly on `http://192.168.0.8:8080`
+- Traefik routes `https://qbittorrent.zinkzone.tech` through Docker's host gateway
+- qBittorrent is also available directly on `http://$(just ms01-host):8080`
 - torrent traffic is published on `6881` TCP and UDP on the host
-- Sonarr and Radarr should use `http://192.168.0.8:8080` for the qBittorrent
+- Sonarr and Radarr should use `http://$(just ms01-host):8080` for the qBittorrent
   download client configuration
 
 ## Filesystem expectations
@@ -64,7 +64,7 @@ docker compose logs -f gluetun
 - this stack stays off `ipvlan` because that network model caused Gluetun to
   fail on startup in testing
 - Traefik integration uses the file provider instead of Docker labels because
-  the reachable endpoint is the host LAN IP and port
+  the reachable endpoint is the Docker host gateway and published WebUI port
 
 ## Related docs
 

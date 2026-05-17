@@ -146,6 +146,16 @@ If the playbook cannot connect or escalate privileges, re-check:
 - SSH key trust
 - `sudo` membership on the target account
 
+The `just ansible-ms01` recipe adds the current MS-01 SSH host key to
+`~/.ssh/known_hosts` when no key exists yet. If MS-01 was reinstalled and the
+key changed, remove the old key first so the next run can trust the rebuilt
+host:
+
+```bash
+ssh-keygen -R "$(just ms01-host)"
+just ansible-ms01
+```
+
 ### Python missing on target host
 
 The Debian install guide includes `python3` because Ansible expects it on the

@@ -9,7 +9,7 @@ Access.
 - qBittorrent sharing the Gluetun network namespace
 - host-published qBittorrent WebUI on port `8080`
 - host-published torrent traffic on `6881` TCP and UDP
-- Traefik integration through the shared host IP instead of Docker labels
+- Traefik integration through Docker's host gateway instead of Docker labels
 
 ## Why
 
@@ -47,16 +47,16 @@ docker compose logs -f gluetun
 ## Access
 
 - qBittorrent UI: `https://qbittorrent.zinkzone.tech`
-- direct host port: `http://192.168.0.8:8080`
-- Sonarr and Radarr should use `http://192.168.0.8:8080` as the download client
+- direct host port: `http://$(just ms01-host):8080`
+- Sonarr and Radarr should use `http://$(just ms01-host):8080` as the download client
   endpoint unless a different internal route is introduced later
 
 ## Notes
 
 - qBittorrent uses `network_mode: service:gluetun`, so if Gluetun is down the
   torrent client loses network access by design
-- Traefik reaches qBittorrent through a file-provider route to the host LAN IP
-  because Gluetun is not attached to the `ipvlan` network
+- Traefik reaches qBittorrent through Docker's host gateway because Gluetun is
+  not attached to the `ipvlan` network
 - centralized logs will still flow into Loki automatically through the host
   collector
 - the LinuxServer qBittorrent image creates a temporary admin password on first
