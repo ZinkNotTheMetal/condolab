@@ -191,7 +191,7 @@ Example pattern:
 
 ```bash
 infisical run --domain=https://secrets.zinkzone.tech \
-  --env=Development -- docker compose up -d
+  --env=dev -- docker compose up -d
 ```
 
 Store secret keys in Infisical with the exact environment variable names the

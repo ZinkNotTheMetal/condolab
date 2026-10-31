@@ -40,7 +40,7 @@ From `src/docker/traefik/`:
 ```bash
 just init-traefik-acme
 infisical run --domain=https://secrets.zinkzone.tech \
-  --env=Production -- docker compose up -d
+  --env=prod -- docker compose up -d
 docker compose ps
 docker compose logs -f traefik
 ```
@@ -56,7 +56,7 @@ docker rm core_traefik_edge
 sudo rm -rf /condolab-data-zfs/docker/traefik/certs/acme.json
 just init-traefik-acme
 infisical run --domain=https://secrets.zinkzone.tech \
-  --env=Production -- docker compose up -d --force-recreate
+  --env=prod -- docker compose up -d --force-recreate
 ```
 
 ## TLS note
