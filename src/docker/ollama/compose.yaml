@@ -5,12 +5,14 @@ services:
     image: ollama/ollama:latest
     container_name: ollama_api
     restart: unless-stopped
-    #    environment:
-    #      OLLAMA_VULKAN: "1"
+    environment:
+      # Vulkan is on by default in current images; the iGPU must be opted into
+      # explicitly or Ollama drops it during device discovery.
+      OLLAMA_IGPU_ENABLE: "1"
     devices:
       - /dev/dri:/dev/dri
     volumes:
-      - /condolab/docker/ollama/models:/root/.ollama
+      - /condolab-data-zfs/docker/ollama/models:/root/.ollama
     labels:
       - traefik.enable=true
       - traefik.docker.network=ipvlan

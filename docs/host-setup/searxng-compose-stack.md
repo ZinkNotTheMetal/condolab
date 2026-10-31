@@ -16,8 +16,8 @@ one local search backend later.
 
 - runs SearXNG behind Traefik as `https://search.zinkzone.tech`
 - uses Valkey for cache support and future limiter support
-- stores SearXNG cache under `/condolab/docker/searxng/cache`
-- stores Valkey data under `/condolab/docker/searxng/valkey`
+- stores SearXNG cache under `/condolab-data-zfs/docker/searxng/cache`
+- stores Valkey data under `/condolab-data-zfs/docker/searxng/valkey`
 - joins the shared `ipvlan` Docker network for Traefik routing
 
 ## Setup flow
@@ -38,8 +38,8 @@ From `src/docker/searxng/`:
 ```bash
 cp .env.example .env
 openssl rand -hex 32
-mkdir -p /condolab/docker/searxng/cache
-mkdir -p /condolab/docker/searxng/valkey
+mkdir -p /condolab-data-zfs/docker/searxng/cache
+mkdir -p /condolab-data-zfs/docker/searxng/valkey
 docker compose up -d
 docker compose ps
 docker compose logs -f searxng

@@ -10,7 +10,7 @@ services:
       PGID: "1000"
       TZ: America/Chicago
     volumes:
-      - /condolab/docker/lazylibrarian/config:/config
+      - /condolab-data-zfs/docker/lazylibrarian/config:/config
       - /mnt/Files/Torrent-Data:/downloads
       - /mnt/Media/Books:/books
     labels:

@@ -15,8 +15,8 @@ configuration and temporary transcode data on the Docker host.
 
 - mounts Movies from `/mnt/Media/Movies`
 - mounts TV shows from `/mnt/Media/TV Shows`
-- stores Plex config under `/condolab/docker/plex/config`
-- stores transcode scratch data under `/condolab/docker/plex/transcode`
+- stores Plex config under `/condolab-data-zfs/docker/plex/config`
+- stores transcode scratch data under `/condolab-data-zfs/docker/plex/transcode`
 - routes Plex through Traefik as `https://plex.zinkzone.tech`
 - keeps direct port `32400` available for Plex-native clients that expect it
 
@@ -39,8 +39,8 @@ From `src/docker/plex/`:
 
 ```bash
 cp .env.example .env
-mkdir -p /condolab/docker/plex/config
-mkdir -p /condolab/docker/plex/transcode
+mkdir -p /condolab-data-zfs/docker/plex/config
+mkdir -p /condolab-data-zfs/docker/plex/transcode
 docker compose up -d
 docker compose ps
 docker compose logs -f plex

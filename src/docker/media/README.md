@@ -32,10 +32,10 @@ boundary.
 
 ```bash
 cp .env.example .env
-mkdir -p /condolab/docker/media/sonarr/config
-mkdir -p /condolab/docker/media/radarr/config
-mkdir -p /condolab/docker/media/prowlarr/config
-mkdir -p /condolab/docker/media/overseerr/config
+mkdir -p /condolab-data-zfs/docker/media/sonarr/config
+mkdir -p /condolab-data-zfs/docker/media/radarr/config
+mkdir -p /condolab-data-zfs/docker/media/prowlarr/config
+mkdir -p /condolab-data-zfs/docker/media/overseerr/config
 docker compose up -d
 docker compose ps
 docker compose logs -f qbittorrent
@@ -59,7 +59,7 @@ docker compose logs -f qbittorrent
 - qBittorrent and Gluetun now live in the dedicated `src/docker/qbittorrent-vpn/`
   stack because the VPN routing model is operationally different from the rest
   of the media apps
-- Sonarr and Radarr should connect to qBittorrent at `http://192.168.0.8:8080`
+- Sonarr and Radarr should connect to qBittorrent at `http://$(just ms01-host):8080`
   unless a different internal route is introduced later
 - FlareSolverr is not exposed through Traefik, but it does join the shared
   `ipvlan` network so it can resolve and reach external indexer endpoints

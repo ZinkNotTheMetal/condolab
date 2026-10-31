@@ -15,7 +15,7 @@ and app stacks.
 ## Included behavior
 
 - runs one local llama.cpp HTTP server
-- stores GGUF model files under `/condolab/docker/ollama/models`
+- stores GGUF model files under `/condolab-data-zfs/docker/ollama/models`
 - routes the service through Traefik as `https://ollama.zinkzone.tech`
 - joins the shared `ipvlan` Docker network so other app stacks can call the API
   directly as `http://llamacpp:8080`
@@ -26,7 +26,7 @@ and app stacks.
 
 1. Ensure the shared external `ipvlan` Docker network already exists.
 2. Copy `src/docker/ollama/.env.example` to `src/docker/ollama/.env`.
-3. Place a GGUF model file into `/condolab/docker/ollama/models`.
+3. Place a GGUF model file into `/condolab-data-zfs/docker/ollama/models`.
 4. Start the stack from `src/docker/ollama/`.
 5. Check the startup logs for Vulkan or GPU detection before relying on the
    stack for latency-sensitive workloads.
@@ -38,7 +38,7 @@ From `src/docker/ollama/`:
 
 ```bash
 cp .env.example .env
-mkdir -p /condolab/docker/ollama/models
+mkdir -p /condolab-data-zfs/docker/ollama/models
 docker compose up -d
 docker compose ps
 docker compose logs -f llamacpp
@@ -67,7 +67,7 @@ docker compose logs -f llamacpp
 On `ms01`, confirm the container can see the GPU device:
 
 ```bash
-cd /condolab/src/docker/ollama
+cd /home/william/condolab/src/docker/ollama
 docker compose exec llamacpp ls /dev/dri
 docker compose logs llamacpp | grep -i -E 'vulkan|gpu|intel|render'
 ```

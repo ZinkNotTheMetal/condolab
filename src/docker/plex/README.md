@@ -27,8 +27,8 @@ host only for Plex configuration and temporary transcode files.
 3. Create the local config and transcode paths:
 
 ```bash
-mkdir -p /condolab/docker/plex/config
-mkdir -p /condolab/docker/plex/transcode
+mkdir -p /condolab-data-zfs/docker/plex/config
+mkdir -p /condolab-data-zfs/docker/plex/transcode
 ```
 
 1. Start the stack:

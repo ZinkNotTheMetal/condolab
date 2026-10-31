@@ -15,7 +15,7 @@ switching between separate admin tools.
 ## Included behavior
 
 - runs CloudBeaver behind Traefik as `https://query.zinkzone.tech`
-- stores the CloudBeaver workspace under `/condolab/docker/cloudbeaver/workspace`
+- stores the CloudBeaver workspace under `/condolab-data-zfs/docker/cloudbeaver/workspace`
 - joins the shared `ipvlan` Docker network for Traefik routing
 
 ## Setup flow
@@ -35,7 +35,7 @@ From `src/docker/cloudbeaver/`:
 
 ```bash
 cp .env.example .env
-mkdir -p /condolab/docker/cloudbeaver/workspace
+mkdir -p /condolab-data-zfs/docker/cloudbeaver/workspace
 docker compose up -d
 docker compose ps
 docker compose logs -f cloudbeaver

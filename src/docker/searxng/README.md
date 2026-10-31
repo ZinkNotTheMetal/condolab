@@ -31,8 +31,8 @@ as a clean backend for future AI search workflows.
 ```bash
 cp .env.example .env
 openssl rand -hex 32
-mkdir -p /condolab/docker/searxng/cache
-mkdir -p /condolab/docker/searxng/valkey
+mkdir -p /condolab-data-zfs/docker/searxng/cache
+mkdir -p /condolab-data-zfs/docker/searxng/valkey
 docker compose up -d
 docker compose ps
 docker compose logs -f searxng

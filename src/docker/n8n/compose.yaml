@@ -25,7 +25,7 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - /condolab/docker/n8n/data:/home/node/.n8n
+      - /condolab-data-zfs/docker/n8n/data:/home/node/.n8n
     labels:
       - traefik.enable=true
       - traefik.docker.network=ipvlan
@@ -56,7 +56,7 @@ services:
       timeout: 10s
       retries: 10
     volumes:
-      - /condolab/databases/n8n/postgres:/var/lib/postgresql/data
+      - /condolab-data-zfs/databases/n8n/postgres:/var/lib/postgresql/data
     networks:
       - n8n
 networks:

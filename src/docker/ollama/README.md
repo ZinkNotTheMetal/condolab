@@ -5,7 +5,7 @@ Experimental local inference stack for the condo lab.
 ## Includes
 
 - Ollama API server
-- persistent local model storage under `/condolab/docker/ollama/models`
+- persistent local model storage under `/condolab-data-zfs/docker/ollama/models`
 - Traefik labels for the `ollama.zinkzone.tech` endpoint
 - shared `ipvlan` network access for routed traffic and app-to-model traffic
 - Intel iGPU access through `/dev/dri` with Vulkan enabled for experimental GPU
@@ -29,7 +29,7 @@ point for approved lab clients and app stacks.
 4. Pull the first model after the API is up.
 
 ```bash
-mkdir -p /condolab/docker/ollama/models
+mkdir -p /condolab-data-zfs/docker/ollama/models
 docker compose up -d
 docker compose ps
 docker compose exec ollama ollama pull qwen2.5:3b
@@ -44,7 +44,7 @@ docker compose exec ollama ollama list
 - the container enables `OLLAMA_VULKAN=1` and mounts `/dev/dri` so the MS-01 can
   attempt Intel iGPU acceleration through Vulkan
 - model downloads can take time on the first pull and will consume disk under
-  `/condolab/docker/ollama/models`
+  `/condolab-data-zfs/docker/ollama/models`
 - centralized logs will flow into Loki automatically through the host collector
 
 ## Quick validation

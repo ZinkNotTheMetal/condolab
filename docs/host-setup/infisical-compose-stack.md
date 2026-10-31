@@ -27,7 +27,7 @@ The stack definition lives in:
 3. Replace placeholder values with generated secrets and set `SITE_URL` to
    `https://secrets.zinkzone.tech` or the final routed hostname you choose.
 4. If this is a fresh Postgres 18 deployment, remove any old database files from
-    `/condolab/databases/infisical/postgres` before the first start.
+    `/condolab-data-zfs/databases/infisical/postgres` before the first start.
 5. Ensure the external `ipvlan` Docker network already exists.
 6. Start the stack from that directory.
 7. Verify the app responds through Traefik on the routed HTTPS hostname.

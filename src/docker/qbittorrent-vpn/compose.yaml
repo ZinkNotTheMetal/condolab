@@ -17,22 +17,23 @@ services:
       SERVER_REGIONS: ${PIA_SERVER_REGIONS:-US East}
       FIREWALL: on
       FIREWALL_OUTBOUND_SUBNETS: ${GLUETUN_FIREWALL_OUTBOUND_SUBNETS:-192.168.0.0/24,192.168.200.0/24}
-      HEALTH_TARGET_ADDRESS: ${GLUETUN_HEALTH_TARGET_ADDRESS:-1.1.1.1:443}
+      HEALTH_TARGET_ADDRESSES: ${GLUETUN_HEALTH_TARGET_ADDRESSES:-cloudflare.com:443,github.com:443}
+      HEALTH_RESTART_VPN: on
       DOT: off
       LOG_LEVEL: ${GLUETUN_LOG_LEVEL:-info}
       TZ: ${TZ:-America/Chicago}
     volumes:
-      - /condolab/docker/qbittorrent-vpn/gluetun:/gluetun
+      - /condolab-data-zfs/docker/qbittorrent-vpn/gluetun:/gluetun
     ports:
       - "8080:8080"
       - "6881:6881"
       - "6881:6881/udp"
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- https://ipinfo.io | grep -q 'ip'"]
+      test: ["CMD", "/gluetun-entrypoint", "healthcheck"]
       interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 30s
+      start_period: 60s
     networks:
       - qbittorrent_vpn
 
@@ -50,7 +51,7 @@ services:
       TZ: ${TZ:-America/Chicago}
       WEBUI_PORT: 8080
     volumes:
-      - /condolab/docker/qbittorrent-vpn/qbittorrent/config:/config
+      - /condolab-data-zfs/docker/qbittorrent-vpn/qbittorrent/config:/config
       - /mnt/Files/Torrent-Data:/downloads
 
 networks:

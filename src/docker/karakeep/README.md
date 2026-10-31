@@ -38,8 +38,8 @@ back to the container names KaraKeep expects:
 
 ```bash
 cp .env.example .env
-mkdir -p /condolab/docker/karakeep/data
-mkdir -p /condolab/docker/karakeep/meilisearch
+mkdir -p /condolab-data-zfs/docker/karakeep/data
+mkdir -p /condolab-data-zfs/docker/karakeep/meilisearch
 docker compose up -d
 docker compose ps
 docker compose logs -f web

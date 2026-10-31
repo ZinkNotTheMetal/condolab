@@ -29,7 +29,7 @@ single-engine admin tools around.
 
 ```bash
 cp .env.example .env
-mkdir -p /condolab/docker/cloudbeaver/workspace
+mkdir -p /condolab-data-zfs/docker/cloudbeaver/workspace
 docker compose up -d
 docker compose ps
 docker compose logs -f cloudbeaver
@@ -42,7 +42,7 @@ docker compose logs -f cloudbeaver
 ## Notes
 
 - CloudBeaver stores its persistent state in
-  `/condolab/docker/cloudbeaver/workspace`
+  `/condolab-data-zfs/docker/cloudbeaver/workspace`
 - the first login flow creates the admin account, so keep the route private
   until that setup is complete
 - CloudBeaver is a better fit than pgAdmin when the lab uses more than one

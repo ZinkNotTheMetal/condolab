@@ -10,7 +10,7 @@ services:
       - -config.file=/etc/loki/config.yaml
     volumes:
       - ./loki/config.yaml:/etc/loki/config.yaml:ro
-      - /condolab/docker/monitoring/loki:/loki
+      - /condolab-data-zfs/docker/monitoring/loki:/loki
     networks:
       - monitoring
 
@@ -38,7 +38,7 @@ services:
       - --web.enable-lifecycle
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - /condolab/docker/monitoring/prometheus:/prometheus
+      - /condolab-data-zfs/docker/monitoring/prometheus:/prometheus
     networks:
       - monitoring
 
@@ -53,7 +53,7 @@ services:
       GF_SERVER_ROOT_URL: https://grafana.zinkzone.tech
     volumes:
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
-      - /condolab/docker/monitoring/grafana:/var/lib/grafana
+      - /condolab-data-zfs/docker/monitoring/grafana:/var/lib/grafana
     labels:
       - traefik.enable=true
       - traefik.docker.network=ipvlan
@@ -75,7 +75,7 @@ services:
       DOZZLE_NO_ANALYTICS: "true"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /condolab/docker/monitoring/dozzle:/data
+      - /condolab-data-zfs/docker/monitoring/dozzle:/data
     labels:
       - traefik.enable=true
       - traefik.docker.network=ipvlan
@@ -92,6 +92,8 @@ services:
     image: containrrr/watchtower:latest
     container_name: monitoring_watchtower_updater
     restart: unless-stopped
+    environment:
+      DOCKER_API_VERSION: "1.40"
     command:
       - --cleanup
       - --interval

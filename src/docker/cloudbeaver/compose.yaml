@@ -10,7 +10,7 @@ services:
     environment:
       JAVA_OPTS: ${JAVA_OPTS}
     volumes:
-      - /condolab/docker/cloudbeaver/workspace:/opt/cloudbeaver/workspace
+      - /condolab-data-zfs/docker/cloudbeaver/workspace:/opt/cloudbeaver/workspace
     labels:
       - traefik.enable=true
       - traefik.docker.network=ipvlan

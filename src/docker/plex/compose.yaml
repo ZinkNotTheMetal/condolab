@@ -30,8 +30,8 @@ services:
     devices:
       - /dev/dri:/dev/dri
     volumes:
-      - /condolab/docker/plex/config:/config
-      - /condolab/docker/plex/transcode:/transcode
+      - /condolab-data-zfs/docker/plex/config:/config
+      - /condolab-data-zfs/docker/plex/transcode:/transcode
       - /mnt/Media/Movies:/data/movies:ro
       - /mnt/Media/TV Shows:/data/tv:ro
     networks:

@@ -61,7 +61,7 @@ in tracked files:
 
 ```bash
 infisical run --domain=https://secrets.zinkzone.tech \
-  --env=Development -- docker compose up -d
+  --env=dev -- docker compose up -d
 ```
 
 Use exact environment variable names for secrets, such as

@@ -15,7 +15,7 @@ library.
 ## Included behavior
 
 - runs LazyLibrarian behind Traefik as `https://library.zinkzone.tech`
-- stores LazyLibrarian config under `/condolab/docker/lazylibrarian/config`
+- stores LazyLibrarian config under `/condolab-data-zfs/docker/lazylibrarian/config`
 - reads downloads from `/mnt/Files/Torrent-Data`
 - reads and manages the books library under `/mnt/Media/Books`
 - joins the shared `ipvlan` Docker network for Traefik routing
@@ -37,7 +37,7 @@ library.
 From `src/docker/lazylibrarian/`:
 
 ```bash
-mkdir -p /condolab/docker/lazylibrarian/config
+mkdir -p /condolab-data-zfs/docker/lazylibrarian/config
 docker compose up -d
 docker compose ps
 docker compose logs -f lazylibrarian
