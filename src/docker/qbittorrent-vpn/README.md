@@ -31,8 +31,8 @@ reaches qBittorrent through the host LAN IP.
 
 ```bash
 cp .env.example .env
-mkdir -p /condolab/docker/qbittorrent-vpn/gluetun
-mkdir -p /condolab/docker/qbittorrent-vpn/qbittorrent/config
+mkdir -p /condolab-data-zfs/docker/qbittorrent-vpn/gluetun
+mkdir -p /condolab-data-zfs/docker/qbittorrent-vpn/qbittorrent/config
 docker compose up -d
 docker compose ps
 docker compose logs -f gluetun
@@ -41,8 +41,8 @@ docker compose logs -f gluetun
 ## Paths
 
 - downloads: `/mnt/Files/Torrent-Data`
-- gluetun state: `/condolab/docker/qbittorrent-vpn/gluetun`
-- qBittorrent config: `/condolab/docker/qbittorrent-vpn/qbittorrent/config`
+- gluetun state: `/condolab-data-zfs/docker/qbittorrent-vpn/gluetun`
+- qBittorrent config: `/condolab-data-zfs/docker/qbittorrent-vpn/qbittorrent/config`
 
 ## Access
 

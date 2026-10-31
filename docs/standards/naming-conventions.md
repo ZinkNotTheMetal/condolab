@@ -77,11 +77,11 @@ Example pattern:
 
 Recommended examples:
 
-- `/condolab/stacks/core/traefik`
-- `/condolab/stacks/media/jellyfin`
-- `/condolab/stacks/home/home-assistant`
-- `/condolab/databases/postgres`
-- `/condolab/backups/postgres`
+- `/condolab-data-zfs/stacks/core/traefik`
+- `/condolab-data-zfs/stacks/media/jellyfin`
+- `/condolab-data-zfs/stacks/home/home-assistant`
+- `/condolab-data-zfs/databases/postgres`
+- `/condolab-data-zfs/backups/postgres`
 
 ## Networks, VLANs, and subnets
 

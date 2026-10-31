@@ -53,7 +53,7 @@ container and bad path before recreating the stack:
 
 ```bash
 docker rm core_traefik_edge
-sudo rm -rf /condolab/docker/traefik/certs/acme.json
+sudo rm -rf /condolab-data-zfs/docker/traefik/certs/acme.json
 just init-traefik-acme
 infisical run --domain=https://secrets.zinkzone.tech \
   --env=Production -- docker compose up -d --force-recreate

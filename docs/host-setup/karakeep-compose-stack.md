@@ -18,8 +18,8 @@ experimental AI stack around.
 - uses Meilisearch for local indexing
 - uses a headless Chrome sidecar for crawling and richer page capture
 - connects to Ollama over the shared `ipvlan` network
-- stores application data under `/condolab/docker/karakeep/data`
-- stores Meilisearch data under `/condolab/docker/karakeep/meilisearch`
+- stores application data under `/condolab-data-zfs/docker/karakeep/data`
+- stores Meilisearch data under `/condolab-data-zfs/docker/karakeep/meilisearch`
 
 ## Setup flow
 
@@ -49,8 +49,8 @@ From `src/docker/karakeep/`:
 ```bash
 cp .env.example .env
 chmod 600 .env
-mkdir -p /condolab/docker/karakeep/data
-mkdir -p /condolab/docker/karakeep/meilisearch
+mkdir -p /condolab-data-zfs/docker/karakeep/data
+mkdir -p /condolab-data-zfs/docker/karakeep/meilisearch
 docker compose up -d
 docker compose ps
 docker compose logs -f web

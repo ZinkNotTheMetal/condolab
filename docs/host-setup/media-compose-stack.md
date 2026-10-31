@@ -29,7 +29,7 @@ The stack definition lives in:
 3. Confirm the NAS mounts for `/mnt/Files/Torrent-Data`, `/mnt/Media/Movies`,
    and `/mnt/Media/TV Shows` exist on the host.
 4. Create host config directories for each service under
-   `/condolab/docker/media/`.
+   `/condolab-data-zfs/docker/media/`.
 5. Start the stack from `src/docker/media/`.
 6. Open each web UI and finish the service-to-service wiring.
 
@@ -39,10 +39,10 @@ From `src/docker/media/`:
 
 ```bash
 cp .env.example .env
-mkdir -p /condolab/docker/media/sonarr/config
-mkdir -p /condolab/docker/media/radarr/config
-mkdir -p /condolab/docker/media/prowlarr/config
-mkdir -p /condolab/docker/media/overseerr/config
+mkdir -p /condolab-data-zfs/docker/media/sonarr/config
+mkdir -p /condolab-data-zfs/docker/media/radarr/config
+mkdir -p /condolab-data-zfs/docker/media/prowlarr/config
+mkdir -p /condolab-data-zfs/docker/media/overseerr/config
 docker compose up -d
 docker compose ps
 docker compose logs -f qbittorrent
@@ -64,7 +64,7 @@ docker compose logs -f qbittorrent
 - downloads: `/mnt/Files/Torrent-Data`
 - movies: `/mnt/Media/Movies`
 - TV shows: `/mnt/Media/TV Shows`
-- local app configs: `/condolab/docker/media/<service>/config`
+- local app configs: `/condolab-data-zfs/docker/media/<service>/config`
 
 Keep the same downloads path visible to qBittorrent, Sonarr, and Radarr so the
 automation workflow can import completed files without path remapping.

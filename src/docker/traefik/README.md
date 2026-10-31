@@ -58,14 +58,14 @@ docker compose logs -f traefik
 
 ## Recover from a bad ACME mount
 
-If Docker reports that `/condolab/docker/traefik/certs/acme.json` is not a
+If Docker reports that `/condolab-data-zfs/docker/traefik/certs/acme.json` is not a
 directory, an older Compose path likely caused Docker to create the file path as
 a directory. Remove the bad container and stale directory, then recreate the
 stack with the current Compose file:
 
 ```bash
 docker rm core_traefik_edge
-sudo rm -rf /condolab/docker/traefik/certs/acme.json
+sudo rm -rf /condolab-data-zfs/docker/traefik/certs/acme.json
 just init-traefik-acme
 infisical run --domain=https://secrets.zinkzone.tech \
   --env=Production -- docker compose up -d --force-recreate

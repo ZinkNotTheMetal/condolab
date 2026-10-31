@@ -17,7 +17,7 @@ sign PDF documents without relying on a cloud-only signature platform.
 - uses the upstream default SQLite-backed setup to keep the private deployment
   small and avoid a separate secrets file
 - stores DocuSeal files, SQLite data, and generated runtime secrets under
-  `/condolab/docker/docuseal/data`
+  `/condolab-data-zfs/docker/docuseal/data`
 - joins the shared `ipvlan` Docker network for Traefik routing
 
 ## Setup flow
@@ -34,7 +34,7 @@ sign PDF documents without relying on a cloud-only signature platform.
 From `src/docker/docuseal/`:
 
 ```bash
-mkdir -p /condolab/docker/docuseal/data
+mkdir -p /condolab-data-zfs/docker/docuseal/data
 docker compose up -d
 docker compose ps
 docker compose logs -f docuseal

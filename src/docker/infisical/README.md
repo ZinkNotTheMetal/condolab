@@ -25,7 +25,7 @@ broader service rollout begins.
 2. Replace placeholder values with generated secrets and set `SITE_URL` to the
    final Traefik-routed hostname, such as `https://secrets.zinkzone.tech`.
 3. If this is a fresh Postgres 18 deployment, ensure any previous database files
-   under `/condolab/databases/infisical/postgres` are removed before first
+   under `/condolab-data-zfs/databases/infisical/postgres` are removed before first
    start.
 4. Ensure the external `ipvlan` Docker network already exists.
 5. Start the stack:

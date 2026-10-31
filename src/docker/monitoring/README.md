@@ -38,12 +38,12 @@ early platform services can be debugged before more apps are added.
 3. Create the host storage directories:
 
 ```bash
-mkdir -p /condolab/docker/monitoring/loki
-mkdir -p /condolab/docker/monitoring/grafana
-mkdir -p /condolab/docker/monitoring/prometheus
-mkdir -p /condolab/docker/monitoring/dozzle
-chown -R 10001:10001 /condolab/docker/monitoring/loki
-chown -R 472:472 /condolab/docker/monitoring/grafana
+mkdir -p /condolab-data-zfs/docker/monitoring/loki
+mkdir -p /condolab-data-zfs/docker/monitoring/grafana
+mkdir -p /condolab-data-zfs/docker/monitoring/prometheus
+mkdir -p /condolab-data-zfs/docker/monitoring/dozzle
+chown -R 10001:10001 /condolab-data-zfs/docker/monitoring/loki
+chown -R 472:472 /condolab-data-zfs/docker/monitoring/grafana
 ```
 
 1. Start the stack:
@@ -71,7 +71,7 @@ docker compose logs -f alloy
 - Loki remains internal to the monitoring stack
 - Loki writes as UID `10001` and Grafana writes as UID `472`, so the backing
   directories or ZFS datasets must be owned by those users before first start
-- Prometheus stores metrics under `/condolab/docker/monitoring/prometheus`
+- Prometheus stores metrics under `/condolab-data-zfs/docker/monitoring/prometheus`
 - Node exporter and cAdvisor are internal-only and scraped by Prometheus
 - Prometheus scrapes `intel-gpu-exporter` directly on the internal monitoring
   network

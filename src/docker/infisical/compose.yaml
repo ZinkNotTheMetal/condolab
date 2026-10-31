@@ -41,7 +41,7 @@ services:
       timeout: 10s
       retries: 10
     volumes:
-      - /condolab/databases/infisical/postgres:/var/lib/postgresql
+      - /condolab-data-zfs/databases/infisical/postgres:/var/lib/postgresql
     networks:
       - infisical
   redis:
@@ -53,7 +53,7 @@ services:
       - --appendonly
       - yes
     volumes:
-      - /condolab/docker/infisical/redis:/data
+      - /condolab-data-zfs/docker/infisical/redis:/data
     networks:
       - infisical
 networks:

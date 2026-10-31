@@ -20,9 +20,9 @@ tools index them.
 ```bash
 cp .env.example .env
 chmod 600 .env
-mkdir -p /condolab/docker/paperless-ngx/data
-mkdir -p /condolab/docker/paperless-ngx/redis
-mkdir -p /condolab/databases/paperless-ngx/postgres
+mkdir -p /condolab-data-zfs/docker/paperless-ngx/data
+mkdir -p /condolab-data-zfs/docker/paperless-ngx/redis
+mkdir -p /condolab-data-zfs/databases/paperless-ngx/postgres
 mkdir -p /mnt/Files/condolab/documents/paperless/consume
 mkdir -p /mnt/Files/condolab/documents/paperless/media
 mkdir -p /mnt/Files/condolab/documents/paperless/export

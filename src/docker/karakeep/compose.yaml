@@ -20,7 +20,7 @@ services:
       NEXTAUTH_URL: ${KARAKEEP_NEXTAUTH_URL}
       NEXTAUTH_SECRET: ${KARAKEEP_NEXTAUTH_SECRET}
     volumes:
-      - /condolab/docker/karakeep/data:/data
+      - /condolab-data-zfs/docker/karakeep/data:/data
     labels:
       - traefik.enable=true
       - traefik.docker.network=ipvlan
@@ -59,7 +59,7 @@ services:
       MEILI_NO_ANALYTICS: "true"
       MEILI_MASTER_KEY: ${KARAKEEP_MEILI_MASTER_KEY}
     volumes:
-      - /condolab/docker/karakeep/meilisearch:/meili_data
+      - /condolab-data-zfs/docker/karakeep/meilisearch:/meili_data
     networks:
       - karakeep
 

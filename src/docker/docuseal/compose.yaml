@@ -9,7 +9,7 @@ services:
       FORCE_SSL: "true"
       HOST: sign.zinkzone.tech
     volumes:
-      - /condolab/docker/docuseal/data:/data/docuseal
+      - /condolab-data-zfs/docker/docuseal/data:/data/docuseal
     labels:
       - traefik.enable=true
       - traefik.docker.network=ipvlan

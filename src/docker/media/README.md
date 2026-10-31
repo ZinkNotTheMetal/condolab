@@ -32,10 +32,10 @@ boundary.
 
 ```bash
 cp .env.example .env
-mkdir -p /condolab/docker/media/sonarr/config
-mkdir -p /condolab/docker/media/radarr/config
-mkdir -p /condolab/docker/media/prowlarr/config
-mkdir -p /condolab/docker/media/overseerr/config
+mkdir -p /condolab-data-zfs/docker/media/sonarr/config
+mkdir -p /condolab-data-zfs/docker/media/radarr/config
+mkdir -p /condolab-data-zfs/docker/media/prowlarr/config
+mkdir -p /condolab-data-zfs/docker/media/overseerr/config
 docker compose up -d
 docker compose ps
 docker compose logs -f qbittorrent

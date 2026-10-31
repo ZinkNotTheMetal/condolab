@@ -43,12 +43,12 @@ From `src/docker/monitoring/`:
 
 ```bash
 cp .env.example .env
-mkdir -p /condolab/docker/monitoring/loki
-mkdir -p /condolab/docker/monitoring/grafana
-mkdir -p /condolab/docker/monitoring/prometheus
-mkdir -p /condolab/docker/monitoring/dozzle
-chown -R 10001:10001 /condolab/docker/monitoring/loki
-chown -R 472:472 /condolab/docker/monitoring/grafana
+mkdir -p /condolab-data-zfs/docker/monitoring/loki
+mkdir -p /condolab-data-zfs/docker/monitoring/grafana
+mkdir -p /condolab-data-zfs/docker/monitoring/prometheus
+mkdir -p /condolab-data-zfs/docker/monitoring/dozzle
+chown -R 10001:10001 /condolab-data-zfs/docker/monitoring/loki
+chown -R 472:472 /condolab-data-zfs/docker/monitoring/grafana
 docker compose up -d
 docker compose ps
 docker compose logs -f alloy

@@ -24,7 +24,7 @@ The stack definition lives in:
 1. Copy `src/docker/qbittorrent-vpn/.env.example` to
    `src/docker/qbittorrent-vpn/.env`.
 2. Set the PIA credentials and confirm the allowed LAN and Docker subnets.
-3. Create host config directories under `/condolab/docker/qbittorrent-vpn/`.
+3. Create host config directories under `/condolab-data-zfs/docker/qbittorrent-vpn/`.
 4. Start the stack from `src/docker/qbittorrent-vpn/`.
 5. Confirm Gluetun becomes healthy before qBittorrent starts.
 6. Access qBittorrent through Traefik or the direct host port and finish the
@@ -36,8 +36,8 @@ From `src/docker/qbittorrent-vpn/`:
 
 ```bash
 cp .env.example .env
-mkdir -p /condolab/docker/qbittorrent-vpn/gluetun
-mkdir -p /condolab/docker/qbittorrent-vpn/qbittorrent/config
+mkdir -p /condolab-data-zfs/docker/qbittorrent-vpn/gluetun
+mkdir -p /condolab-data-zfs/docker/qbittorrent-vpn/qbittorrent/config
 docker compose up -d
 docker compose ps
 docker compose logs -f gluetun
@@ -54,8 +54,8 @@ docker compose logs -f gluetun
 ## Filesystem expectations
 
 - downloads: `/mnt/Files/Torrent-Data`
-- Gluetun state: `/condolab/docker/qbittorrent-vpn/gluetun`
-- qBittorrent config: `/condolab/docker/qbittorrent-vpn/qbittorrent/config`
+- Gluetun state: `/condolab-data-zfs/docker/qbittorrent-vpn/gluetun`
+- qBittorrent config: `/condolab-data-zfs/docker/qbittorrent-vpn/qbittorrent/config`
 
 ## Notes
 

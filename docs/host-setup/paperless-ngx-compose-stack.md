@@ -19,7 +19,7 @@ AnythingLLM responsible for OCR or archive management.
 - uses Tika and Gotenberg for richer Office/document extraction
 - consumes documents from the Synology-backed `/mnt/Files` mount
 - stores archived document media on the Synology-backed `/mnt/Files` mount
-- keeps database files under `/condolab/databases/paperless-ngx/postgres`
+- keeps database files under `/condolab-data-zfs/databases/paperless-ngx/postgres`
 
 ## NAS mount layout
 
@@ -35,9 +35,9 @@ Use that mount for Paperless document data:
 Keep these paths local to the MS-01:
 
 ```text
-/condolab/docker/paperless-ngx/data
-/condolab/docker/paperless-ngx/redis
-/condolab/databases/paperless-ngx/postgres
+/condolab-data-zfs/docker/paperless-ngx/data
+/condolab-data-zfs/docker/paperless-ngx/redis
+/condolab-data-zfs/databases/paperless-ngx/postgres
 ```
 
 ## Setup flow
@@ -58,9 +58,9 @@ From `src/docker/paperless-ngx/`:
 ```bash
 cp .env.example .env
 chmod 600 .env
-mkdir -p /condolab/docker/paperless-ngx/data
-mkdir -p /condolab/docker/paperless-ngx/redis
-mkdir -p /condolab/databases/paperless-ngx/postgres
+mkdir -p /condolab-data-zfs/docker/paperless-ngx/data
+mkdir -p /condolab-data-zfs/docker/paperless-ngx/redis
+mkdir -p /condolab-data-zfs/databases/paperless-ngx/postgres
 mkdir -p /mnt/Files/condolab/documents/paperless/consume
 mkdir -p /mnt/Files/condolab/documents/paperless/media
 mkdir -p /mnt/Files/condolab/documents/paperless/export
