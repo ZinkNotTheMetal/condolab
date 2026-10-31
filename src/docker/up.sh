@@ -18,8 +18,14 @@ cd "$(dirname "$0")"
 
 DOMAIN="${INFISICAL_DOMAIN:-https://secrets.zinkzone.tech}"
 ENVIRONMENT="${INFISICAL_ENVIRONMENT:-prod}"
-ACTION="${1:-up -d}"
-[ $# -gt 0 ] && shift
+
+COMMAND=(up -d)
+case "${1:-}" in
+  up|down|stop|restart|pull)
+    COMMAND=("$1")
+    shift
+    ;;
+esac
 
 failed=()
 
@@ -27,9 +33,8 @@ for dir in */; do
   [ -f "${dir}compose.yaml" ] || continue
   name="${dir%/}"
 
-  # shellcheck disable=SC2086
   if (cd "$dir" && infisical run --domain="$DOMAIN" --env="$ENVIRONMENT" -- \
-      docker compose $ACTION "$@"); then
+      docker compose "${COMMAND[@]}" "$@"); then
     echo "ok: $name"
   else
     echo "FAILED: $name"
